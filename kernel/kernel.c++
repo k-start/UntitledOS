@@ -9,6 +9,22 @@ void initialize() {
 	}
 }
 
+void scroll() {
+	for(int c = 0; c < VGA_COLS; c++) {
+		for(int r = 0; r < VGA_ROWS-1; r++) {
+			const size_t index = (VGA_COLS * r) + c;
+			const size_t nextRowIndex = index + VGA_COLS;
+			vgaBuffer[index] = vgaBuffer[nextRowIndex];
+		}
+	}
+
+	for(int c = 0; c < VGA_COLS; c++) {
+		int r = VGA_ROWS-1;
+		const size_t index = (VGA_COLS * r) + c;
+		vgaBuffer[index] = ((uint16_t)color << 8) | ' ';
+	}
+}
+
 void putChar(char c) {
 	if(c == '\n') {
 		column = 0;
@@ -23,9 +39,11 @@ void putChar(char c) {
 		column = 0;
 		row++;
 	}
+
 	if(row >= VGA_ROWS) {
 		column = 0;
-		row = 0;
+		row--;
+		scroll();
 	}
 }
 
