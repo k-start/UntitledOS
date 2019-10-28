@@ -912,3 +912,9 @@ _deps
 *.exe
 *.out
 *.app
+
+*.iso
+isodir
+sysroot
+
+.vscode
