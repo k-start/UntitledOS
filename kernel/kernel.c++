@@ -29,10 +29,12 @@ void putChar(char c) {
 	}
 }
 
-void print(const char* string) {
+void print(const char* string, uint8_t stringColor = 0x0F) {
+	color = stringColor;
 	for(size_t i = 0; string[i] != '\0'; i++) {
 		putChar(string[i]);
 	}
+	color = 0x0F;
 }
 
 extern "C" {
@@ -41,5 +43,7 @@ extern "C" {
 
 		print("Hello World!\n");
 		print("This is a new line!\n");
+		print("This line has colour\n", LIGHT_BLUE);
+		print("This line has a different colour\n", LIGHT_RED);
     }
 }
