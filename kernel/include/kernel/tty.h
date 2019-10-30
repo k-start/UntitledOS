@@ -5,6 +5,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#include <kernel/ports.h>
 
 void terminalInitialize(void);
 void terminalPutChar(char c);

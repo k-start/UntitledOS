@@ -1,6 +1,6 @@
 ; Defined in isr.c
 [extern isrHandler]
-[extern irq_handler]
+[extern irqHandler]
 [extern idt_reg]
 
 ; Common ISR code
@@ -31,24 +31,28 @@ isr_common_stub:
 ; Common IRQ code. Identical to ISR code except for the 'call' 
 ; and the 'pop ebx'
 irq_common_stub:
-    ; pusha 
-    ; mov ax, ds
-    ; push eax
-    ; mov ax, 0x10
-    ; mov ds, ax
-    ; mov es, ax
-    ; mov fs, ax
-    ; mov gs, ax
-    ; call irq_handler ; Different than the ISR code
-    ; pop ebx  ; Different than the ISR code
-    ; mov ds, bx
-    ; mov es, bx
-    ; mov fs, bx
-    ; mov gs, bx
-    ; popa
-    ; add esp, 8
-    ; sti
-    iret 
+    pusha
+    push ds
+    push es
+    push fs
+    push gs
+    mov ax, 0x10
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov eax, esp
+    push eax
+    mov eax, irqHandler
+    call eax
+    pop eax
+    pop gs
+    pop fs
+    pop es
+    pop ds
+    popa
+    add esp, 8
+    iret
 	
 ; We don't get information about which interrupt was caller
 ; when the handler is run, so we will need to have a different handler

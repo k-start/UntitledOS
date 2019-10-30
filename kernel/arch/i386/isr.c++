@@ -3,10 +3,6 @@
 
 isr_t interruptHandlers[256];
 
-static inline void outb(uint16_t port, uint8_t val) {
-    asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
-}
-
 /* Can't do this with a loop because we need the address
  * of the function names */
 void isrInstall() {
@@ -125,14 +121,13 @@ void registerInterruptHandler(unsigned char n, isr_t handler) {
     interruptHandlers[n] = handler;
 }
 
-void irqHandler(registers_t r) {
-    printf("IRQ\n");
-
-    if (r.int_no >= 40) outb(0xA0, 0x20); 
+void irqHandler(registers_t *r) {
+    
+    if (r->int_no >= 40) outb(0xA0, 0x20); 
     outb(0x20, 0x20);
 
-    if (interruptHandlers[r.int_no] != 0) {
-        isr_t handler = interruptHandlers[r.int_no];
+    if (interruptHandlers[r->int_no] != 0) {
+        isr_t handler = interruptHandlers[r->int_no];
         handler(r);
     }
 }

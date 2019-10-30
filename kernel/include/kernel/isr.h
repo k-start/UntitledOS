@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <kernel/ports.h>
 #include <kernel/tty.h>
 
 extern "C" {
@@ -84,10 +85,10 @@ extern "C" {
     void isrInstall();
     void isrHandler(registers_t *r);
 
-    typedef void (*isr_t)(registers_t);
+    typedef void (*isr_t)(registers_t*);
     void registerInterruptHandler(unsigned char n, isr_t handler);
 
-    void irqHandler(registers_t r);
+    void irqHandler(registers_t *r);
 }
 
 #endif

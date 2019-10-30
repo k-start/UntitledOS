@@ -11,6 +11,15 @@ static size_t terminalColumn;
 static uint8_t terminalColor;
 static uint16_t* terminalBuffer;
 
+void update_cursor(int x, int y) {
+	uint16_t pos = y * VGA_WIDTH + x;
+ 
+	outb(0x3D4, 0x0F);
+	outb(0x3D5, (uint8_t) (pos & 0xFF));
+	outb(0x3D4, 0x0E);
+	outb(0x3D5, (uint8_t) ((pos >> 8) & 0xFF));
+}
+
 void terminalInitialize(void) {
     terminalRow = 0;
     terminalColumn = 0;
@@ -49,6 +58,8 @@ void terminalPutChar(char c) {
         terminalRow--;
         terminalScroll();
     }
+
+    update_cursor(terminalColumn, terminalRow);
 }
 
 void terminalWrite(const char* data, size_t size) {

@@ -35,6 +35,9 @@ $(ARCHDIR)/tty.o \
 $(ARCHDIR)/interrupts.o \
 $(ARCHDIR)/isr.o \
 $(ARCHDIR)/idt.o \
+$(ARCHDIR)/timer.o \
+$(ARCHDIR)/keyboard.o \
+$(ARCHDIR)/ports.o \
 kernel/kernel.o \
  
 OBJS=\
