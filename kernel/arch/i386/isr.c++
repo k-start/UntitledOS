@@ -1,9 +1,6 @@
 #include <kernel/isr.h>
 #include <kernel/idt.h>
 
-#include <stdio.h>
-#include <stdint.h>
-
 isr_t interruptHandlers[256];
 
 static inline void outb(uint16_t port, uint8_t val) {
@@ -119,7 +116,9 @@ char exceptionMessages[35][50] = {
 };
 
 void isrHandler(registers_t *r) {
+    terminalSetColor(0x0C);
     printf("Interrupt Recieved: %s\n", exceptionMessages[r->int_no]);
+    terminalSetColor(0x0F);
 }
 
 void registerInterruptHandler(unsigned char n, isr_t handler) {

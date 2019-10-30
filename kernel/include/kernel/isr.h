@@ -1,6 +1,10 @@
 #ifndef _KERNEL_ISR_H
 #define _KERNEL_ISR_H
 
+#include <stdio.h>
+#include <stdint.h>
+#include <kernel/tty.h>
+
 extern "C" {
 
     extern void isr0();
