@@ -29,7 +29,7 @@ LIBS:=$(LIBS) $(KERNEL_ARCH_LIBS)
  
 KERNEL_OBJS=\
 $(ARCHDIR)/boot.o \
-$(ARCHDIR)/gdt2.o \
+$(ARCHDIR)/gdtAsm.o \
 $(ARCHDIR)/gdt.o \
 $(ARCHDIR)/tty.o \
 $(ARCHDIR)/interrupts.o \

@@ -6,14 +6,11 @@
 
 extern "C" {
 
-    // extern void InstallGDT();
-
     void kernel_main(void) {
         gdt_install();
-        // InstallGDT();
         terminalInitialize();
 
-        isr_install();
+        isrInstall();
 
         printf(" _    _       _   _ _   _          _  ____   _____ \n");
         printf("| |  | |     | | (_) | | |        | |/ __ \\ / ____|\n");
@@ -26,7 +23,5 @@ extern "C" {
 
         __asm__ __volatile__("INT $2");
         __asm__ __volatile__("int $3");
-
-        printf("UntitledOS Kernel\n");
     }
 }

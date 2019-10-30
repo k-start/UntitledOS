@@ -4,48 +4,47 @@
 #include <stdio.h>
 #include <stdint.h>
 
-isr_t interrupt_handlers[256];
+isr_t interruptHandlers[256];
 
-static inline void outb(uint16_t port, uint8_t val)
-{
+static inline void outb(uint16_t port, uint8_t val) {
     asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
 }
 
 /* Can't do this with a loop because we need the address
  * of the function names */
-void isr_install() {
-    set_idt_gate(0, (unsigned int)isr0);
-    set_idt_gate(1, (unsigned int)isr1);
-    set_idt_gate(2, (unsigned int)isr2);
-    set_idt_gate(3, (unsigned int)isr3);
-    set_idt_gate(4, (unsigned int)isr4);
-    set_idt_gate(5, (unsigned int)isr5);
-    set_idt_gate(6, (unsigned int)isr6);
-    set_idt_gate(7, (unsigned int)isr7);
-    set_idt_gate(8, (unsigned int)isr8);
-    set_idt_gate(9, (unsigned int)isr9);
-    set_idt_gate(10, (unsigned int)isr10);
-    set_idt_gate(11, (unsigned int)isr11);
-    set_idt_gate(12, (unsigned int)isr12);
-    set_idt_gate(13, (unsigned int)isr13);
-    set_idt_gate(14, (unsigned int)isr14);
-    set_idt_gate(15, (unsigned int)isr15);
-    set_idt_gate(16, (unsigned int)isr16);
-    set_idt_gate(17, (unsigned int)isr17);
-    set_idt_gate(18, (unsigned int)isr18);
-    set_idt_gate(19, (unsigned int)isr19);
-    set_idt_gate(20, (unsigned int)isr20);
-    set_idt_gate(21, (unsigned int)isr21);
-    set_idt_gate(22, (unsigned int)isr22);
-    set_idt_gate(23, (unsigned int)isr23);
-    set_idt_gate(24, (unsigned int)isr24);
-    set_idt_gate(25, (unsigned int)isr25);
-    set_idt_gate(26, (unsigned int)isr26);
-    set_idt_gate(27, (unsigned int)isr27);
-    set_idt_gate(28, (unsigned int)isr28);
-    set_idt_gate(29, (unsigned int)isr29);
-    set_idt_gate(30, (unsigned int)isr30);
-    set_idt_gate(31, (unsigned int)isr31);
+void isrInstall() {
+    setIdtGate(0, (unsigned int)isr0);
+    setIdtGate(1, (unsigned int)isr1);
+    setIdtGate(2, (unsigned int)isr2);
+    setIdtGate(3, (unsigned int)isr3);
+    setIdtGate(4, (unsigned int)isr4);
+    setIdtGate(5, (unsigned int)isr5);
+    setIdtGate(6, (unsigned int)isr6);
+    setIdtGate(7, (unsigned int)isr7);
+    setIdtGate(8, (unsigned int)isr8);
+    setIdtGate(9, (unsigned int)isr9);
+    setIdtGate(10, (unsigned int)isr10);
+    setIdtGate(11, (unsigned int)isr11);
+    setIdtGate(12, (unsigned int)isr12);
+    setIdtGate(13, (unsigned int)isr13);
+    setIdtGate(14, (unsigned int)isr14);
+    setIdtGate(15, (unsigned int)isr15);
+    setIdtGate(16, (unsigned int)isr16);
+    setIdtGate(17, (unsigned int)isr17);
+    setIdtGate(18, (unsigned int)isr18);
+    setIdtGate(19, (unsigned int)isr19);
+    setIdtGate(20, (unsigned int)isr20);
+    setIdtGate(21, (unsigned int)isr21);
+    setIdtGate(22, (unsigned int)isr22);
+    setIdtGate(23, (unsigned int)isr23);
+    setIdtGate(24, (unsigned int)isr24);
+    setIdtGate(25, (unsigned int)isr25);
+    setIdtGate(26, (unsigned int)isr26);
+    setIdtGate(27, (unsigned int)isr27);
+    setIdtGate(28, (unsigned int)isr28);
+    setIdtGate(29, (unsigned int)isr29);
+    setIdtGate(30, (unsigned int)isr30);
+    setIdtGate(31, (unsigned int)isr31);
 
     // Remap the PIC
     outb(0x20, 0x11);
@@ -60,28 +59,28 @@ void isr_install() {
     outb(0xA1, 0x0); 
 
     // Install the IRQs
-    set_idt_gate(32, (unsigned int)irq0);
-    set_idt_gate(33, (unsigned int)irq1);
-    set_idt_gate(34, (unsigned int)irq2);
-    set_idt_gate(35, (unsigned int)irq3);
-    set_idt_gate(36, (unsigned int)irq4);
-    set_idt_gate(37, (unsigned int)irq5);
-    set_idt_gate(38, (unsigned int)irq6);
-    set_idt_gate(39, (unsigned int)irq7);
-    set_idt_gate(40, (unsigned int)irq8);
-    set_idt_gate(41, (unsigned int)irq9);
-    set_idt_gate(42, (unsigned int)irq10);
-    set_idt_gate(43, (unsigned int)irq11);
-    set_idt_gate(44, (unsigned int)irq12);
-    set_idt_gate(45, (unsigned int)irq13);
-    set_idt_gate(46, (unsigned int)irq14);
-    set_idt_gate(47, (unsigned int)irq15);
+    setIdtGate(32, (unsigned int)irq0);
+    setIdtGate(33, (unsigned int)irq1);
+    setIdtGate(34, (unsigned int)irq2);
+    setIdtGate(35, (unsigned int)irq3);
+    setIdtGate(36, (unsigned int)irq4);
+    setIdtGate(37, (unsigned int)irq5);
+    setIdtGate(38, (unsigned int)irq6);
+    setIdtGate(39, (unsigned int)irq7);
+    setIdtGate(40, (unsigned int)irq8);
+    setIdtGate(41, (unsigned int)irq9);
+    setIdtGate(42, (unsigned int)irq10);
+    setIdtGate(43, (unsigned int)irq11);
+    setIdtGate(44, (unsigned int)irq12);
+    setIdtGate(45, (unsigned int)irq13);
+    setIdtGate(46, (unsigned int)irq14);
+    setIdtGate(47, (unsigned int)irq15);
 
-    set_idt(); // Load with ASM
+    setIdt(); // Load with ASM
 }
 
 /* To print the message which defines every exception */
-char exception_messages[35][50] = {
+char exceptionMessages[35][50] = {
     "Division By Zero",
     "Debug",
     "Non Maskable Interrupt\0",
@@ -119,27 +118,22 @@ char exception_messages[35][50] = {
     "Reserved"
 };
 
-void isr_handler(registers_t *r) {
-    // outb(0x20, 0x20);
-    printf("Interrupt Recieved: %s\n", exception_messages[r->int_no]);
-    // printf("Interrupt Recieved\n");
-    // for(;;);
+void isrHandler(registers_t *r) {
+    printf("Interrupt Recieved: %s\n", exceptionMessages[r->int_no]);
 }
 
-void register_interrupt_handler(unsigned char n, isr_t handler) {
-    interrupt_handlers[n] = handler;
+void registerInterruptHandler(unsigned char n, isr_t handler) {
+    interruptHandlers[n] = handler;
 }
 
-void irq_handler(registers_t r) {
+void irqHandler(registers_t r) {
     printf("IRQ\n");
-    /* After every interrupt we need to send an EOI to the PICs
-     * or they will not send another interrupt again */
-    if (r.int_no >= 40) outb(0xA0, 0x20); /* slave */
-    outb(0x20, 0x20); /* master */
 
-    /* Handle the interrupt in a more modular way */
-    if (interrupt_handlers[r.int_no] != 0) {
-        isr_t handler = interrupt_handlers[r.int_no];
+    if (r.int_no >= 40) outb(0xA0, 0x20); 
+    outb(0x20, 0x20);
+
+    if (interruptHandlers[r.int_no] != 0) {
+        isr_t handler = interruptHandlers[r.int_no];
         handler(r);
     }
 }

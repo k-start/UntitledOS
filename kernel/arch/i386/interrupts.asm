@@ -1,5 +1,5 @@
 ; Defined in isr.c
-[extern isr_handler]
+[extern isrHandler]
 [extern irq_handler]
 [extern idt_reg]
 
@@ -17,7 +17,7 @@ isr_common_stub:
     mov gs, ax
     mov eax, esp   ; Push us the stack
     push eax
-    mov eax, isr_handler
+    mov eax, isrHandler
     call eax       ; A special call, preserves the 'eip' register
     pop eax
     pop gs
@@ -108,10 +108,10 @@ global irq13
 global irq14
 global irq15
 
-global _idt_load
-extern idt_reg
-_idt_load:
-    lidt [idt_reg]
+global idtLoad
+extern idtReg
+idtLoad:
+    lidt [idtReg]
     ret
 
 ; 0: Divide By Zero Exception

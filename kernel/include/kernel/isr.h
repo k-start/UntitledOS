@@ -1,9 +1,8 @@
-#ifndef ISR_H
-#define ISR_H
+#ifndef _KERNEL_ISR_H
+#define _KERNEL_ISR_H
 
 extern "C" {
 
-    /* ISRs reserved for CPU exceptions */
     extern void isr0();
     extern void isr1();
     extern void isr2();
@@ -36,7 +35,7 @@ extern "C" {
     extern void isr29();
     extern void isr30();
     extern void isr31();
-    /* IRQ definitions */
+    
     extern void irq0();
     extern void irq1();
     extern void irq2();
@@ -71,21 +70,20 @@ extern "C" {
     #define IRQ14 46
     #define IRQ15 47
 
-    /* Struct which aggregates many registers */
     typedef struct {
-        unsigned int gs, fs, es, ds; /* Data segment selector */
-        unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax; /* Pushed by pusha. */
-        unsigned int int_no, err_code; /* Interrupt number and error code (if applicable) */
-        unsigned int eip, cs, eflags, useresp, ss; /* Pushed by the processor automatically */
+        unsigned int gs, fs, es, ds;
+        unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;
+        unsigned int int_no, err_code;
+        unsigned int eip, cs, eflags, useresp, ss;
     } registers_t;
 
-    void isr_install();
-    void isr_handler(registers_t *r);
+    void isrInstall();
+    void isrHandler(registers_t *r);
 
     typedef void (*isr_t)(registers_t);
-    void register_interrupt_handler(unsigned char n, isr_t handler);
+    void registerInterruptHandler(unsigned char n, isr_t handler);
 
-    void irq_handler(registers_t r);
+    void irqHandler(registers_t r);
 }
 
 #endif
