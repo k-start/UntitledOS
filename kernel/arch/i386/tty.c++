@@ -1,8 +1,3 @@
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <string.h>
-
 #include <kernel/tty.h>
 
 #include "vga.h"
@@ -15,6 +10,15 @@ static size_t terminalRow;
 static size_t terminalColumn;
 static uint8_t terminalColor;
 static uint16_t* terminalBuffer;
+
+void update_cursor(int x, int y) {
+	uint16_t pos = y * VGA_WIDTH + x;
+ 
+	outb(0x3D4, 0x0F);
+	outb(0x3D5, (uint8_t) (pos & 0xFF));
+	outb(0x3D4, 0x0E);
+	outb(0x3D5, (uint8_t) ((pos >> 8) & 0xFF));
+}
 
 void terminalInitialize(void) {
     terminalRow = 0;
@@ -54,6 +58,8 @@ void terminalPutChar(char c) {
         terminalRow--;
         terminalScroll();
     }
+
+    update_cursor(terminalColumn, terminalRow);
 }
 
 void terminalWrite(const char* data, size_t size) {
@@ -75,5 +81,36 @@ void terminalScroll() {
     for(size_t x = 0; x < VGA_WIDTH; x++) {
         const size_t index = (VGA_HEIGHT-1) * VGA_WIDTH + x;
         terminalBuffer[index] = vgaEntry(' ', terminalColor);
+    }
+}
+
+void setTime(int hours, int minutes, int seconds) {
+    char secondsStr[3], minutesStr[3], hoursStr[3];
+    itoa(seconds, secondsStr);
+    itoa(minutes, minutesStr);
+    itoa(hours, hoursStr);
+
+    if(seconds < 10) {
+        terminalPutEntryAt('0', terminalColor, 14, 8);
+        terminalPutEntryAt(secondsStr[0], terminalColor, 15, 8);
+    } else {
+        terminalPutEntryAt(secondsStr[0], terminalColor, 14, 8);
+        terminalPutEntryAt(secondsStr[1], terminalColor, 15, 8);
+    }
+
+    if(minutes < 10) {
+        terminalPutEntryAt('0', terminalColor, 11, 8);
+        terminalPutEntryAt(minutesStr[0], terminalColor, 12, 8);
+    } else {
+        terminalPutEntryAt(minutesStr[0], terminalColor, 11, 8);
+        terminalPutEntryAt(minutesStr[1], terminalColor, 12, 8);
+    }
+
+    if(hours < 10) {
+        terminalPutEntryAt('0', terminalColor, 11, 8);
+        terminalPutEntryAt(hoursStr[0], terminalColor, 8, 8);
+    } else {
+        terminalPutEntryAt(hoursStr[0], terminalColor, 8, 8);
+        terminalPutEntryAt(hoursStr[1], terminalColor, 9, 8);
     }
 }

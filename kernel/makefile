@@ -29,7 +29,15 @@ LIBS:=$(LIBS) $(KERNEL_ARCH_LIBS)
  
 KERNEL_OBJS=\
 $(ARCHDIR)/boot.o \
+$(ARCHDIR)/gdtAsm.o \
+$(ARCHDIR)/gdt.o \
 $(ARCHDIR)/tty.o \
+$(ARCHDIR)/interrupts.o \
+$(ARCHDIR)/isr.o \
+$(ARCHDIR)/idt.o \
+$(ARCHDIR)/timer.o \
+$(ARCHDIR)/keyboard.o \
+$(ARCHDIR)/ports.o \
 kernel/kernel.o \
  
 OBJS=\
@@ -65,6 +73,9 @@ $(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
  
 .S.o:
 	$(CC) -MD -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
+
+%.o: %.asm
+	nasm $< -f elf -o $@
  
 clean:
 	rm -f untitledos.kernel
