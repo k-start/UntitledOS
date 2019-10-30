@@ -18,14 +18,16 @@ extern "C" {
         printf("| |__| | | | | |_| | |_| |  __/ (_| | |__| |____) |\n");
         printf(" \\____/|_| |_|\\__|_|\\__|_|\\___|\\__,_|\\____/|_____/ \n\n");
         
-        printf("UntitledOS Kernel\n\n");
+        printf("UntitledOS Kernel\n");
+        printf("Uptime: 00:00:00\n");
 
         gdtInstall();
         isrInstall();
 
+        // enable interrupts
         asm volatile("sti");
-        init_timer(100);
-        init_keyboard();
+        initTimer(100);
+        initKeyboard();
 
         // stops main exiting too soon
         for(;;) {

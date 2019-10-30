@@ -3,6 +3,6 @@
 
 #include <kernel/ports.h>
 
-void init_keyboard();
+void initKeyboard();
 
 #endif

@@ -83,3 +83,34 @@ void terminalScroll() {
         terminalBuffer[index] = vgaEntry(' ', terminalColor);
     }
 }
+
+void setTime(int hours, int minutes, int seconds) {
+    char secondsStr[3], minutesStr[3], hoursStr[3];
+    itoa(seconds, secondsStr);
+    itoa(minutes, minutesStr);
+    itoa(hours, hoursStr);
+
+    if(seconds < 10) {
+        terminalPutEntryAt('0', terminalColor, 14, 8);
+        terminalPutEntryAt(secondsStr[0], terminalColor, 15, 8);
+    } else {
+        terminalPutEntryAt(secondsStr[0], terminalColor, 14, 8);
+        terminalPutEntryAt(secondsStr[1], terminalColor, 15, 8);
+    }
+
+    if(minutes < 10) {
+        terminalPutEntryAt('0', terminalColor, 11, 8);
+        terminalPutEntryAt(minutesStr[0], terminalColor, 12, 8);
+    } else {
+        terminalPutEntryAt(minutesStr[0], terminalColor, 11, 8);
+        terminalPutEntryAt(minutesStr[1], terminalColor, 12, 8);
+    }
+
+    if(hours < 10) {
+        terminalPutEntryAt('0', terminalColor, 11, 8);
+        terminalPutEntryAt(hoursStr[0], terminalColor, 8, 8);
+    } else {
+        terminalPutEntryAt(hoursStr[0], terminalColor, 8, 8);
+        terminalPutEntryAt(hoursStr[1], terminalColor, 9, 8);
+    }
+}

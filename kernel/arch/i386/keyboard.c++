@@ -41,16 +41,14 @@ unsigned char kbdus[128] =
     0,	/* All other keys are undefined */
 };
 
-static void keyboard_callback(registers_t *regs) {
-    /* The PIC leaves us the scancode in port 0x60 */
+static void keyboardCallback(registers_t *regs) {
     unsigned char scancode = inb(0x60);
-    
-    // printf("Key Action %c\n", kbdus[scancode]);
+
     if(kbdus[scancode]) {
         printf("%c", kbdus[scancode]);
     }
 }
 
-void init_keyboard() {
-    registerInterruptHandler(IRQ1, &keyboard_callback); 
+void initKeyboard() {
+    registerInterruptHandler(IRQ1, &keyboardCallback); 
 }

@@ -5,6 +5,6 @@
 #include <kernel/tty.h>
 #include <kernel/ports.h>
 
-void init_timer(unsigned int freq);
+void initTimer(unsigned int freq);
 
 #endif
