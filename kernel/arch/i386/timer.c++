@@ -22,7 +22,7 @@ static void timerCallback(registers_t *regs) {
             }
         }
 
-        setTime(hours, minutes, seconds);
+        // setTime(hours, minutes, seconds);
     }
 }
 
@@ -53,8 +53,8 @@ static void rtcCallback(registers_t *regs) {
     hour = inb(0x71);
     hour = ((hour & 0x0F) + (((hour & 0x70) / 16) * 10)) | (hour & 0x80);
     
-    printf("%d/%d/%d\n", day, month, year);
-    printf("%d:%d:%d\n", hour, minute, second);
+    // printf("%d/%d/%d\n", day, month, year);
+    // printf("%d:%d:%d\n", hour-1, minute, second);
 }
 
 void initTimer(unsigned int freq) {
@@ -72,9 +72,6 @@ void initTimer(unsigned int freq) {
     outb(0x70, 0x8B);		// set the index again (a read will reset the index to register D)
     outb(0x71, prev | 0x40);
     asm("sti");
-
-
-
 
 
     unsigned int divisor = 1193180 / freq;

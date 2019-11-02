@@ -19,7 +19,7 @@ extern "C" {
         printf(" \\____/|_| |_|\\__|_|\\__|_|\\___|\\__,_|\\____/|_____/ \n\n");
         
         printf("UntitledOS Kernel\n");
-        printf("Uptime: 00:00:00\n");
+        // printf("Uptime: 00:00:00\n");
 
         gdtInstall();
         isrInstall();
