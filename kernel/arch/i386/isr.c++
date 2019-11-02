@@ -1,7 +1,9 @@
 #include <kernel/isr.h>
 #include <kernel/idt.h>
 
-isr_t interruptHandlers[256];
+#include "../../IRQHandler.h"
+
+IRQHandler *interruptHandlers[256];
 
 /* Can't do this with a loop because we need the address
  * of the function names */
@@ -117,16 +119,16 @@ void isrHandler(registers_t *r) {
     terminalSetColor(0x0F);
 }
 
-void registerInterruptHandler(unsigned char n, isr_t handler) {
-    interruptHandlers[n] = handler;
+void registerInterruptHandler(unsigned char n, void *handler) {
+    interruptHandlers[n] = (IRQHandler*)handler;
 }
 
 void irqHandler(registers_t *r) {
     if (r->int_no >= 40) outb(0xA0, 0x20); 
     outb(0x20, 0x20);
 
-    if (interruptHandlers[r->int_no] != 0) {
-        isr_t handler = interruptHandlers[r->int_no];
-        handler(r);
+    if (interruptHandlers[r->int_no] != nullptr) {
+        IRQHandler *handler = interruptHandlers[r->int_no];
+        handler->handleIRQ();
     }
 }

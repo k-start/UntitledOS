@@ -3,8 +3,10 @@
 #include <kernel/tty.h>
 #include <kernel/gdt.h>
 #include <kernel/isr.h>
-#include <kernel/timer.h>
-#include <kernel/keyboard.h>
+// #include <kernel/timer.h>
+// #include <kernel/keyboard.h>
+
+#include "../devices/KeyboardDevice.h"
 
 extern "C" {
 
@@ -26,8 +28,10 @@ extern "C" {
 
         // enable interrupts
         asm volatile("sti");
-        initTimer(100);
-        initKeyboard();
+        // initTimer(100);
+        // initKeyboard();
+
+        KeyboardDevice keyboard(IRQ1);
 
         // stops main exiting too soon
         for(;;) {

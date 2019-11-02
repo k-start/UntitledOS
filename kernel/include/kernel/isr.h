@@ -86,7 +86,7 @@ extern "C" {
     void isrHandler(registers_t *r);
 
     typedef void (*isr_t)(registers_t*);
-    void registerInterruptHandler(unsigned char n, isr_t handler);
+    void registerInterruptHandler(unsigned char n, void *handler);
 
     void irqHandler(registers_t *r);
 }
