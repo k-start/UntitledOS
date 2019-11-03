@@ -1,13 +1,13 @@
-#include <kernel/isr.h>
-#include <kernel/idt.h>
+#include <kernel/CPU.h>
 
 #include "../../IRQHandler.h"
 
-IRQHandler *interruptHandlers[256];
+idtGate_t idt[IDT_ENTRIES];
+idtRgister_t idtReg;
 
-/* Can't do this with a loop because we need the address
- * of the function names */
-void isrInstall() {
+IRQHandler *interruptHandlers[15];
+
+void CPU::isrInstall() {
     setIdtGate(0, (unsigned int)isr0);
     setIdtGate(1, (unsigned int)isr1);
     setIdtGate(2, (unsigned int)isr2);
@@ -74,6 +74,25 @@ void isrInstall() {
     setIdt(); // Load with ASM
 }
 
+void CPU::setIdtGate(int n, u32 handler) {
+    idt[n].lowOffset = low_16(handler);
+    idt[n].sel = KERNEL_CS;
+    idt[n].zero = 0;
+    idt[n].flags = 0x8E; 
+    idt[n].highOffset = high_16(handler);
+}
+
+void CPU::setIdt() {
+    idtReg.base = (unsigned int) &idt;
+    idtReg.limit = IDT_ENTRIES * sizeof(idtGate_t) - 1;
+
+    idtLoad();
+}
+
+void CPU::setInterruptHandler(u8 n, void *handler) {
+    interruptHandlers[n - 32] = (IRQHandler*) handler;
+}
+
 /* To print the message which defines every exception */
 char exceptionMessages[35][50] = {
     "Division By Zero",
@@ -119,16 +138,12 @@ void isrHandler(registers_t *r) {
     terminalSetColor(0x0F);
 }
 
-void registerInterruptHandler(unsigned char n, void *handler) {
-    interruptHandlers[n] = (IRQHandler*)handler;
-}
-
 void irqHandler(registers_t *r) {
     if (r->int_no >= 40) outb(0xA0, 0x20); 
     outb(0x20, 0x20);
 
-    if (interruptHandlers[r->int_no] != nullptr) {
-        IRQHandler *handler = interruptHandlers[r->int_no];
+    if (interruptHandlers[r->int_no - 32] != nullptr) {
+        IRQHandler *handler = interruptHandlers[r->int_no - 32];
         handler->handleIRQ();
     }
 }

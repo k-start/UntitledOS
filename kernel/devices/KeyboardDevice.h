@@ -3,6 +3,8 @@
 
 #include <Types.h>
 #include "../IRQHandler.h"
+#include <stdio.h>
+#include <kernel/ports.h>
 
 class KeyboardDevice : public IRQHandler {
 

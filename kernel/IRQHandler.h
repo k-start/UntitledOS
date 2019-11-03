@@ -2,7 +2,7 @@
 #define IRQHANDLER_H
 
 #include <Types.h>
-#include <kernel/isr.h>
+#include <kernel/CPU.h>
 
 class IRQHandler {
 

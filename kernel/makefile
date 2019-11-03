@@ -33,15 +33,13 @@ $(ARCHDIR)/gdtAsm.o \
 $(ARCHDIR)/gdt.o \
 $(ARCHDIR)/tty.o \
 $(ARCHDIR)/interrupts.o \
-$(ARCHDIR)/isr.o \
-$(ARCHDIR)/idt.o \
 $(ARCHDIR)/ports.o \
+$(ARCHDIR)/CPU.o \
 kernel/kernel.o \
 devices/KeyboardDevice.o \
 IRQHandler.o \
 
 # $(ARCHDIR)/timer.o \
-# $(ARCHDIR)/keyboard.o \
 
  
 OBJS=\

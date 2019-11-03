@@ -2,9 +2,8 @@
 
 #include <kernel/tty.h>
 #include <kernel/gdt.h>
-#include <kernel/isr.h>
 // #include <kernel/timer.h>
-// #include <kernel/keyboard.h>
+#include <kernel/CPU.h>
 
 #include "../devices/KeyboardDevice.h"
 
@@ -21,15 +20,13 @@ extern "C" {
         printf(" \\____/|_| |_|\\__|_|\\__|_|\\___|\\__,_|\\____/|_____/ \n\n");
         
         printf("UntitledOS Kernel\n");
-        // printf("Uptime: 00:00:00\n");
 
         gdtInstall();
-        isrInstall();
+        CPU::isrInstall();
 
         // enable interrupts
         asm volatile("sti");
         // initTimer(100);
-        // initKeyboard();
 
         KeyboardDevice keyboard(IRQ1);
 
