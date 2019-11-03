@@ -38,9 +38,8 @@ $(ARCHDIR)/CPU.o \
 kernel/kernel.o \
 devices/KeyboardDevice.o \
 IRQHandler.o \
-
-# $(ARCHDIR)/timer.o \
-
+PIT.o \
+RTC.o \
  
 OBJS=\
 $(ARCHDIR)/crti.o \

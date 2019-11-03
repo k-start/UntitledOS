@@ -2,9 +2,10 @@
 #define KEYBOARDDEVICE_H
 
 #include <Types.h>
-#include "../IRQHandler.h"
 #include <stdio.h>
 #include <kernel/ports.h>
+
+#include "../IRQHandler.h"
 
 class KeyboardDevice : public IRQHandler {
 

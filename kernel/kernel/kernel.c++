@@ -2,10 +2,11 @@
 
 #include <kernel/tty.h>
 #include <kernel/gdt.h>
-// #include <kernel/timer.h>
 #include <kernel/CPU.h>
 
 #include "../devices/KeyboardDevice.h"
+#include "../PIT.h"
+#include "../RTC.h"
 
 extern "C" {
 
@@ -26,9 +27,10 @@ extern "C" {
 
         // enable interrupts
         asm volatile("sti");
-        // initTimer(100);
 
+        PIT pit(IRQ0, 100);
         KeyboardDevice keyboard(IRQ1);
+        RTC rtc(IRQ8);
 
         // stops main exiting too soon
         for(;;) {
