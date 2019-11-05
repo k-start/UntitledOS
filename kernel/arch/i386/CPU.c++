@@ -134,7 +134,7 @@ char exceptionMessages[35][50] = {
 
 void isrHandler(registers_t *r) {
     terminalSetColor(0x0C);
-    printf("Interrupt Recieved: %s\n", exceptionMessages[r->int_no]);
+    kprintf("Interrupt Recieved: %s\n", exceptionMessages[r->int_no]);
     terminalSetColor(0x0F);
 }
 

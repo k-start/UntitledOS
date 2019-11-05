@@ -35,11 +35,14 @@ $(ARCHDIR)/tty.o \
 $(ARCHDIR)/interrupts.o \
 $(ARCHDIR)/ports.o \
 $(ARCHDIR)/CPU.o \
+$(ARCHDIR)/VirtualConsole.o \
 kernel/kernel.o \
 devices/KeyboardDevice.o \
 IRQHandler.o \
 PIT.o \
 RTC.o \
+kprintf.o \
+kputchar.o \
  
 OBJS=\
 $(ARCHDIR)/crti.o \

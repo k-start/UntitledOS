@@ -28,8 +28,10 @@ static char shift_map[0x80] = {
     0, 0, 0, 0, 0, 0, '|', 0, 0, 0,
 };
 
-KeyboardDevice::KeyboardDevice(u8 IRQNumber) : IRQHandler(IRQNumber) {
+KeyboardDevice *KeyboardDevice::keyboardDevice = nullptr;
 
+KeyboardDevice::KeyboardDevice(u8 IRQNumber) : IRQHandler(IRQNumber) {
+    keyboardDevice = this;
 }
 
 void KeyboardDevice::handleIRQ() {
@@ -37,13 +39,14 @@ void KeyboardDevice::handleIRQ() {
     u8 ch = raw & 0x7f;
     bool pressed = !(raw & 0x80);
 
-    keyStateChanged(ch, pressed);
-
     // printf("%d\n", raw);
     
     if(raw == 0x3A) {
         capsLock = !capsLock;
     }
+
+    keyStateChanged(ch, pressed);
+    listeners->keyStateChanged(raw, pressed);
 
     // if(map[scancode]) {
     //     printf("%d\n", scancode);
@@ -60,6 +63,16 @@ void KeyboardDevice::keyStateChanged(u8 ch, bool pressed) {
     }
 
     if(pressed) {
-        printf("%c", (shifted | capsLock) ? shift_map[ch] : map[ch]);
+        // printf("%c", (shifted | capsLock) ? shift_map[ch] : map[ch]);
     }
+}
+
+void KeyboardDevice::registerListener(KeyboardListener *listener) {
+    listeners = listener;
+}
+
+
+
+KeyboardListener::KeyboardListener() {
+    KeyboardDevice::keyboardDevice->registerListener(this);
 }
