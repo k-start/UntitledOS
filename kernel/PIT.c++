@@ -1,5 +1,8 @@
 #include "PIT.h"
 
+#include <stdio.h>
+#include <kernel/ports.h>
+
 PIT::PIT(u8 IRQNumber, int freq) : IRQHandler(IRQNumber) {
     u32 divisor = 1193180 / freq;
     u8 low  = (u8)(divisor & 0xFF);

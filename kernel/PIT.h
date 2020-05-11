@@ -2,8 +2,6 @@
 #define PIT_H
 
 #include <Types.h>
-#include <stdio.h>
-#include <kernel/ports.h>
 
 #include "../IRQHandler.h"
 

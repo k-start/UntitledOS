@@ -2,9 +2,6 @@
 #define KERNEL_CPU_H
 
 #include <Types.h>
-#include <kernel/ports.h>
-#include <kernel/tty.h>
-#include <kernel/kstdio.h>
 
 #define IRQ0 32
 #define IRQ1 33

@@ -1,4 +1,5 @@
 #include <kernel/VirtualConsole.h>
+#include <kernel/kstdio.h>
 
 VirtualConsole *VirtualConsole::currentConsole = nullptr;
 

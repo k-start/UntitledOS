@@ -1,5 +1,8 @@
 #include "RTC.h"
 
+#include <stdio.h>
+#include <kernel/ports.h>
+
 RTC::RTC(u8 IRQNumber) : IRQHandler(IRQNumber) {
     asm("cli");
     outb(0x70, 0x8A);	// select Status Register A, and disable NMI (by setting the 0x80 bit)

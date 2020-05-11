@@ -1,5 +1,8 @@
 #include "KeyboardDevice.h"
 
+#include <stdio.h>
+#include <kernel/ports.h>
+
 static char map[0x80] = {
     0, '\033', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 0x08, '\t',
     'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', 0,

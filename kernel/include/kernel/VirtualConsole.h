@@ -3,7 +3,7 @@
 
 #include "../../devices/KeyboardDevice.h"
 #include <Types.h>
-#include <kernel/kstdio.h>
+#include <stdint.h>
 
 class VirtualConsole : public KeyboardListener {
 

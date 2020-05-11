@@ -1,5 +1,9 @@
 #include <kernel/CPU.h>
 
+#include <kernel/ports.h>
+#include <kernel/tty.h>
+#include <kernel/kstdio.h>
+
 #include "../../IRQHandler.h"
 
 idtGate_t idt[IDT_ENTRIES];

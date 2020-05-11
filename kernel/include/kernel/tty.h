@@ -1,11 +1,8 @@
 #ifndef _KERNEL_TTY_H
 #define _KERNEL_TTY_H
 
-#include <stddef.h>
-#include <stdlib.h>
 #include <stdint.h>
-#include <string.h>
-#include <kernel/ports.h>
+#include <stddef.h>
 
 void terminalInitialize(void);
 void terminalPutChar(char c);
