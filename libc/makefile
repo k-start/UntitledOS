@@ -53,7 +53,7 @@ LIBK_OBJS=$(FREEOBJS:.o=.libk.o)
 BINARIES=libk.a
  
 .PHONY: all clean install install-headers install-libs
-.SUFFIXES: .o .libk.o .c++ .S
+.SUFFIXES: .o .libk.o .cpp .S
  
 all: $(BINARIES)
  
@@ -63,13 +63,13 @@ libc.a: $(OBJS)
 libk.a: $(LIBK_OBJS)
 	$(AR) rcs $@ $(LIBK_OBJS)
  
-.c++.o:
+.cpp.o:
 	$(CC) -MD -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
  
-.c++.S:
+.cpp.S:
 	$(CC) -MD -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
  
-.c++.libk.o:
+.cpp.libk.o:
 	$(CC) -MD -c $< -o $@ $(LIBK_CFLAGS) $(LIBK_CPPFLAGS)
  
 .S.libk.o:
