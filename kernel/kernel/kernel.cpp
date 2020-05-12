@@ -3,6 +3,7 @@
 #include <kernel/gdt.h>
 #include <kernel/CPU.h>
 #include <kernel/VirtualConsole.h>
+#include <kernel/kstdlib.h>
 
 #include "../devices/KeyboardDevice.h"
 #include "../PIT.h"
@@ -31,7 +32,10 @@ extern "C" {
         PIT pit(IRQ0, 100);
         KeyboardDevice keyboard(IRQ1);
         VirtualConsole test;
-        RTC rtc(IRQ8);
+        // RTC rtc(IRQ8);
+
+        // VirtualConsole* pointer = (VirtualConsole*)kmalloc(sizeof(VirtualConsole));
+        new VirtualConsole();
 
         // stops main exiting too soon
         for(;;) {

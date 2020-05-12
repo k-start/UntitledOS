@@ -1,6 +1,6 @@
 #include "KeyboardDevice.h"
 
-#include <stdio.h>
+#include <kernel/kstdio.h>
 #include <kernel/ports.h>
 
 static char map[0x80] = {
@@ -57,7 +57,7 @@ void KeyboardDevice::handleIRQ() {
 }
 
 void KeyboardDevice::keyStateChanged(u8 ch, bool pressed) {
-    // printf("%d %d\n", ch, pressed);
+    // kprintf("%c %d\n", map[ch], pressed);
     
     switch (ch) {
         case 0x2a:
@@ -66,7 +66,7 @@ void KeyboardDevice::keyStateChanged(u8 ch, bool pressed) {
     }
 
     if(pressed) {
-        // printf("%c", (shifted | capsLock) ? shift_map[ch] : map[ch]);
+        kprintf("%c", (shifted | capsLock) ? shift_map[ch] : map[ch]);
     }
 }
 

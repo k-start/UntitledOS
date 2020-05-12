@@ -15,7 +15,7 @@ VirtualConsole::VirtualConsole() : KeyboardListener() {
 }
 
 void VirtualConsole::keyStateChanged(u8 raw, bool pressed) {
-    kprintf("%d", raw);
+    // kprintf("%d", raw);
 }
 
 void VirtualConsole::putchar(char c) {
@@ -30,6 +30,7 @@ void VirtualConsole::putchar(char c) {
 
         if (++column == 80) {
             column = 0;
+            row++;
         }
     }
 }

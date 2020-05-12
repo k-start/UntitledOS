@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
  
-static bool kprint(const char* data, size_t length) {
+bool kprint(const char* data, size_t length) {
 	const unsigned char* bytes = (const unsigned char*) data;
 	for (size_t i = 0; i < length; i++)
 		if (kputchar(bytes[i]) == EOF)
