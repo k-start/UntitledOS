@@ -17,6 +17,7 @@ CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra
 CPPFLAGS:=$(CPPFLAGS) -D__is_kernel -Iinclude
 LDFLAGS:=$(LDFLAGS)
 LIBS:=$(LIBS) -nostdlib -lk -lgcc
+# LIBS:=$(LIBS) -nostdlib -lk
  
 ARCHDIR=arch/$(HOSTARCH)
  
@@ -33,12 +34,17 @@ $(ARCHDIR)/gdtAsm.o \
 $(ARCHDIR)/gdt.o \
 $(ARCHDIR)/tty.o \
 $(ARCHDIR)/interrupts.o \
-$(ARCHDIR)/isr.o \
-$(ARCHDIR)/idt.o \
-$(ARCHDIR)/timer.o \
-$(ARCHDIR)/keyboard.o \
 $(ARCHDIR)/ports.o \
+$(ARCHDIR)/CPU.o \
+$(ARCHDIR)/VirtualConsole.o \
 kernel/kernel.o \
+devices/KeyboardDevice.o \
+IRQHandler.o \
+PIT.o \
+RTC.o \
+kprintf.o \
+kputchar.o \
+kmalloc.o \
  
 OBJS=\
 $(ARCHDIR)/crti.o \
@@ -57,7 +63,7 @@ $(ARCHDIR)/crtend.o \
 $(ARCHDIR)/crtn.o \
  
 .PHONY: all clean install install-headers install-kernel
-.SUFFIXES: .o .c++ .S
+.SUFFIXES: .o .cpp .S
  
 all: untitledos.kernel
  
@@ -68,7 +74,7 @@ untitledos.kernel: $(OBJS) $(ARCHDIR)/linker.ld
 $(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
 	OBJ=`$(CC) $(CFLAGS) $(LDFLAGS) -print-file-name=$(@F)` && cp "$$OBJ" $@
  
-.c++.o:
+.cpp.o:
 	$(CC) -MD -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
  
 .S.o:

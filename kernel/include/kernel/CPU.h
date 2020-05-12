@@ -1,13 +1,51 @@
-#ifndef _KERNEL_ISR_H
-#define _KERNEL_ISR_H
+#ifndef KERNEL_CPU_H
+#define KERNEL_CPU_H
 
-#include <stdio.h>
-#include <stdint.h>
-#include <kernel/ports.h>
-#include <kernel/tty.h>
+#include <Types.h>
+
+#define IRQ0 32
+#define IRQ1 33
+#define IRQ2 34
+#define IRQ3 35
+#define IRQ4 36
+#define IRQ5 37
+#define IRQ6 38
+#define IRQ7 39
+#define IRQ8 40
+#define IRQ9 41
+#define IRQ10 42
+#define IRQ11 43
+#define IRQ12 44
+#define IRQ13 45
+#define IRQ14 46
+#define IRQ15 47
+
+#define KERNEL_CS 0x08
+#define IDT_ENTRIES 256
+#define low_16(address) (unsigned short)((address) & 0xFFFF)
+#define high_16(address) (unsigned short)(((address) & 0xFFFF0000) >> 16)
+
+typedef struct {
+    u32 gs, fs, es, ds;
+    u32 edi, esi, ebp, esp, ebx, edx, ecx, eax;
+    u32 int_no, err_code;
+    u32 eip, cs, eflags, useresp, ss;
+} registers_t;
+
+typedef struct {
+    u16 lowOffset;
+    u16 sel;
+    u8 zero;
+    u8 flags; 
+    u16 highOffset;
+} __attribute__((packed)) idtGate_t ;
+
+typedef struct {
+    u16 limit;
+    u32 base;
+} __attribute__((packed)) idtRgister_t;
 
 extern "C" {
-
     extern void isr0();
     extern void isr1();
     extern void isr2();
@@ -58,37 +96,22 @@ extern "C" {
     extern void irq14();
     extern void irq15();
 
-    #define IRQ0 32
-    #define IRQ1 33
-    #define IRQ2 34
-    #define IRQ3 35
-    #define IRQ4 36
-    #define IRQ5 37
-    #define IRQ6 38
-    #define IRQ7 39
-    #define IRQ8 40
-    #define IRQ9 41
-    #define IRQ10 42
-    #define IRQ11 43
-    #define IRQ12 44
-    #define IRQ13 45
-    #define IRQ14 46
-    #define IRQ15 47
-
-    typedef struct {
-        unsigned int gs, fs, es, ds;
-        unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;
-        unsigned int int_no, err_code;
-        unsigned int eip, cs, eflags, useresp, ss;
-    } registers_t;
-
-    void isrInstall();
     void isrHandler(registers_t *r);
-
-    typedef void (*isr_t)(registers_t*);
-    void registerInterruptHandler(unsigned char n, isr_t handler);
-
     void irqHandler(registers_t *r);
+
+    extern void idtLoad();
 }
+
+class CPU {
+
+    public:
+        // static IRQHandler *interruptHandlers[256];
+
+        static void isrInstall();
+        static void setIdtGate(int n, u32 handler);
+        static void setIdt();
+        static void setInterruptHandler(u8 n, void *handler);
+};
+
 
 #endif
