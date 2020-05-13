@@ -1,4 +1,4 @@
-#include "PIT.h"
+#include <kernel/PIT.h>
 
 #include <stdio.h>
 #include <kernel/ports.h>

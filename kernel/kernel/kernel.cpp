@@ -5,24 +5,15 @@
 #include <kernel/VirtualConsole.h>
 #include <kernel/kstdlib.h>
 
-#include "../devices/KeyboardDevice.h"
-#include "../PIT.h"
-#include "../RTC.h"
+#include <Y/Vector.h>
+
+#include <kernel/devices/KeyboardDevice.h>
+#include <kernel/PIT.h>
+#include <kernel/RTC.h>
 
 extern "C" {
 
     void kernel_main(void) {
-        // terminalInitialize();
-
-        // printf(" _    _       _   _ _   _          _  ____   _____ \n");
-        // printf("| |  | |     | | (_) | | |        | |/ __ \\ / ____|\n");
-        // printf("| |  | |_ __ | |_ _| |_| | ___  __| | |  | | (___  \n");
-        // printf("| |  | | '_ \\| __| | __| |/ _ \\/ _` | |  | |\\___ \\ \n");
-        // printf("| |__| | | | | |_| | |_| |  __/ (_| | |__| |____) |\n");
-        // printf(" \\____/|_| |_|\\__|_|\\__|_|\\___|\\__,_|\\____/|_____/ \n\n");
-        
-        // printf("UntitledOS Kernel\n");
-
         gdtInstall();
         CPU::isrInstall();
 
@@ -31,11 +22,17 @@ extern "C" {
 
         PIT pit(IRQ0, 100);
         KeyboardDevice keyboard(IRQ1);
-        VirtualConsole test;
-        // RTC rtc(IRQ8);
+        VirtualConsole vConsole;
+        RTC rtc(IRQ8);
 
-        // VirtualConsole* pointer = (VirtualConsole*)kmalloc(sizeof(VirtualConsole));
-        new VirtualConsole();
+        kprintf(" _    _       _   _ _   _          _  ____   _____ \n");
+        kprintf("| |  | |     | | (_) | | |        | |/ __ \\ / ____|\n");
+        kprintf("| |  | |_ __ | |_ _| |_| | ___  __| | |  | | (___  \n");
+        kprintf("| |  | | '_ \\| __| | __| |/ _ \\/ _` | |  | |\\___ \\ \n");
+        kprintf("| |__| | | | | |_| | |_| |  __/ (_| | |__| |____) |\n");
+        kprintf(" \\____/|_| |_|\\__|_|\\__|_|\\___|\\__,_|\\____/|_____/ \n\n");
+        
+        kprintf("UntitledOS Kernel\n");
 
         // stops main exiting too soon
         for(;;) {

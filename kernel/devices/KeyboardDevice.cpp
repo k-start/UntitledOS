@@ -1,5 +1,4 @@
-#include "KeyboardDevice.h"
-
+#include <kernel/devices/KeyboardDevice.h>
 #include <kernel/kstdio.h>
 #include <kernel/ports.h>
 

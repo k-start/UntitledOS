@@ -2,8 +2,7 @@
 #define RTC_H
 
 #include <Types.h>
-
-#include "../IRQHandler.h"
+#include <kernel/IRQHandler.h>
 
 class RTC : public IRQHandler {
 

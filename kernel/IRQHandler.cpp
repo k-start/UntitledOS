@@ -1,5 +1,4 @@
-#include "IRQHandler.h"
-
+#include <kernel/IRQHandler.h>
 #include <kernel/CPU.h>
 
 IRQHandler::IRQHandler(u8 IRQNumber) : IRQNumber(IRQNumber) {

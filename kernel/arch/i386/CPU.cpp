@@ -3,8 +3,7 @@
 #include <kernel/ports.h>
 #include <kernel/tty.h>
 #include <kernel/kstdio.h>
-
-#include "../../IRQHandler.h"
+#include <kernel/IRQHandler.h>
 
 idtGate_t idt[IDT_ENTRIES];
 idtRgister_t idtReg;
@@ -137,9 +136,8 @@ char exceptionMessages[35][50] = {
 };
 
 void isrHandler(registers_t *r) {
-    terminalSetColor(0x0C);
     kprintf("Interrupt Recieved: %s\n", exceptionMessages[r->int_no]);
-    terminalSetColor(0x0F);
+    asm("hlt");
 }
 
 void irqHandler(registers_t *r) {

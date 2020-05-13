@@ -2,8 +2,7 @@
 #define KEYBOARDDEVICE_H
 
 #include <Types.h>
-
-#include "../IRQHandler.h"
+#include <kernel/IRQHandler.h>
 
 class KeyboardListener {
 

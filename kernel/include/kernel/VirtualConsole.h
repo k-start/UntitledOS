@@ -1,7 +1,7 @@
 #ifndef KERNEL_CONSOLE_H
 #define KERNEL_CONSOLE_H
 
-#include "../../devices/KeyboardDevice.h"
+#include <kernel/devices/KeyboardDevice.h>
 #include <Types.h>
 #include <stdint.h>
 
@@ -15,6 +15,7 @@ class VirtualConsole : public KeyboardListener {
         virtual void keyStateChanged(u8 raw, bool pressed) override;
 
         void putchar(char c);
+        void scroll();
 
     private:
         uint16_t* vgaBuffer;

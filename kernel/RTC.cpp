@@ -1,4 +1,4 @@
-#include "RTC.h"
+#include <kernel/RTC.h>
 
 #include <stdio.h>
 #include <kernel/ports.h>

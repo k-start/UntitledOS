@@ -22,15 +22,31 @@ void VirtualConsole::putchar(char c) {
     if(c == '\n') {
         column = 0;
         row++;
-    } else {
-        unsigned char uc = c;
-        
+    } else {        
         const int index = row * 80 + column;
 	    vgaBuffer[index] = c | 0x0f << 8;
 
-        if (++column == 80) {
+        if (++column == width) {
             column = 0;
             row++;
         }
+    }
+
+    if(row == height) {
+        row--;
+        scroll();
+    }
+}
+
+void VirtualConsole::scroll() {
+    for(int y = 0; y < height-1; y++) {
+        for(int x = 0; x < width; x++) {
+            const int index = y * width + x;
+			vgaBuffer[index] = vgaBuffer[index + width];
+        }
+    }
+    for(int x = 0; x < width; x++) {
+        const int index = (height-1) * width + x;
+        vgaBuffer[index] = ' ' | 0x0f << 8;
     }
 }
