@@ -1,19 +1,24 @@
+#include <kernel/multiboot.h>
 #include <kernel/kstdio.h>
 #include <kernel/tty.h>
 #include <kernel/gdt.h>
 #include <kernel/CPU.h>
 #include <kernel/VirtualConsole.h>
 #include <kernel/kstdlib.h>
-
-#include <Y/Vector.h>
-
 #include <kernel/devices/KeyboardDevice.h>
 #include <kernel/PIT.h>
 #include <kernel/RTC.h>
 
-extern "C" {
+#include <Y/Vector.h>
 
-    void kernel_main(void) {
+extern "C" {
+    // void kernel_main() {
+    void kernel_main(unsigned int ebx, unsigned int magic) {
+        multiboot_info_t *mbt = (multiboot_info_t*)(ebx);
+        
+        mbt->mmap_addr += 0xC0000000;
+        multiboot_memory_map_t* mmap = (multiboot_memory_map_t*) mbt->mmap_addr;
+
         gdtInstall();
         CPU::isrInstall();
 
@@ -25,14 +30,28 @@ extern "C" {
         VirtualConsole vConsole;
         RTC rtc(IRQ8);
 
-        kprintf(" _    _       _   _ _   _          _  ____   _____ \n");
-        kprintf("| |  | |     | | (_) | | |        | |/ __ \\ / ____|\n");
-        kprintf("| |  | |_ __ | |_ _| |_| | ___  __| | |  | | (___  \n");
-        kprintf("| |  | | '_ \\| __| | __| |/ _ \\/ _` | |  | |\\___ \\ \n");
-        kprintf("| |__| | | | | |_| | |_| |  __/ (_| | |__| |____) |\n");
-        kprintf(" \\____/|_| |_|\\__|_|\\__|_|\\___|\\__,_|\\____/|_____/ \n\n");
+        printf(" _    _       _   _ _   _          _  ____   _____ \n");
+        printf("| |  | |     | | (_) | | |        | |/ __ \\ / ____|\n");
+        printf("| |  | |_ __ | |_ _| |_| | ___  __| | |  | | (___  \n");
+        printf("| |  | | '_ \\| __| | __| |/ _ \\/ _` | |  | |\\___ \\ \n");
+        printf("| |__| | | | | |_| | |_| |  __/ (_| | |__| |____) |\n");
+        printf(" \\____/|_| |_|\\__|_|\\__|_|\\___|\\__,_|\\____/|_____/ \n\n");
         
-        kprintf("UntitledOS Kernel\n");
+        printf("UntitledOS Kernel\n");
+        sout("\n\nUntitledOS Kernel\n");
+
+        // printf("Ram detected: %d kb\n", (mbt->mem_lower + mbt->mem_upper));
+
+        int useableMemory = 0;
+
+        for(int i = 0; i < mbt->mmap_length; i++) {
+            if(mmap[i].type == MULTIBOOT_MEMORY_AVAILABLE) {
+                sout("%d  addr: %d  len: %d  size: %d\n", i, mmap[i].addr, mmap[i].len, mmap[i].size);
+                useableMemory += mmap[i].len;
+            }
+        }
+
+        printf("Ram detected: %d mb\n", useableMemory/1024/1024);
 
         // stops main exiting too soon
         for(;;) {

@@ -6,4 +6,7 @@
 int kprintf(const char* __restrict, ...);
 int kputchar(int);
 
+int sout(const char* __restrict, ...);
+int soutchar(int);
+
 #endif

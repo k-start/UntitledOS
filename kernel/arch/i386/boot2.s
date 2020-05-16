@@ -108,10 +108,14 @@ _start:
 
 	# Set up the stack.
 	mov $stack_top, %esp
+	pushl %eax
+	# add %ebx, 0xC0000000
+	pushl %ebx
 
-	call _init
+	# call _init
 
 	# Enter the high-level kernel.
+	# add %ebx, 0xC0000000
 	call kernel_main
 
 	# Infinite loop if the system has nothing more to do.

@@ -136,8 +136,8 @@ char exceptionMessages[35][50] = {
 };
 
 void isrHandler(registers_t *r) {
+    sout("Interrupt Recieved: %s\n", exceptionMessages[r->int_no]);
     kprintf("Interrupt Recieved: %s\n", exceptionMessages[r->int_no]);
-    asm("hlt");
 }
 
 void irqHandler(registers_t *r) {

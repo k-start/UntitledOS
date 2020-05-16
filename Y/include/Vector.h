@@ -1,9 +1,11 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-class Vector {
+#include <stdio.h>
+
+template<typename T> class Vector {
     public:
-        Vector();
+        Vector() {  } 
 
 };
 

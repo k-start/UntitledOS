@@ -1,4 +1,4 @@
-ENTRY (_start)
+ENTRY (loader)
 
 SECTIONS
 {
@@ -10,7 +10,6 @@ SECTIONS
 	_kernel_start = .;
 	.text ALIGN (4K) : AT (ADDR (.text) - 0xC0000000)
 	{
-		*(.multiboot)
 		*(.text)
 	}
 	.rodata ALIGN (4K) : AT (ADDR (.rodata) - 0xC0000000)

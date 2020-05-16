@@ -1,5 +1,5 @@
 #include <kernel/devices/KeyboardDevice.h>
-#include <kernel/kstdio.h>
+#include <stdio.h>
 #include <kernel/ports.h>
 
 static char map[0x80] = {
@@ -65,7 +65,7 @@ void KeyboardDevice::keyStateChanged(u8 ch, bool pressed) {
     }
 
     if(pressed) {
-        kprintf("%c", (shifted | capsLock) ? shift_map[ch] : map[ch]);
+        printf("%c", (shifted | capsLock) ? shift_map[ch] : map[ch]);
     }
 }
 

@@ -5,7 +5,8 @@ VirtualConsole *VirtualConsole::currentConsole = nullptr;
 
 VirtualConsole::VirtualConsole() : KeyboardListener() {
     VirtualConsole::currentConsole = this;
-    vgaBuffer = (uint16_t*) 0xC03FF000;
+    // vgaBuffer = (uint16_t*) 0xC03FF000;
+    vgaBuffer = (uint16_t*) 0xC00B8000;
 
     for(int x = 0; x < width; x++) {
         for(int y = 0; y < height; y++) {
