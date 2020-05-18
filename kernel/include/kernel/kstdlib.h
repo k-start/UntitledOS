@@ -25,6 +25,11 @@ inline void operator delete[](void *p, size_t size) {
     kfree(p, size);
 }
 
+inline void operator delete[](void *p) {
+    kfree(p, 1);
+}
+
+
 inline void *operator new(size_t, void *p)     throw() { return p; }
 inline void *operator new[](size_t, void *p)   throw() { return p; }
 inline void  operator delete  (void *, void *) throw() { };

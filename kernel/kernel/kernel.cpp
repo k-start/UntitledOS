@@ -10,8 +10,6 @@
 #include <kernel/RTC.h>
 #include <kernel/pmm.h>
 
-#include <Y/Vector.h>
-
 extern "C" {
     
     void kernel_main(unsigned int ebx, unsigned int magic) {
@@ -42,8 +40,6 @@ extern "C" {
         sout("UntitledOS Kernel\n");
 
         printf("Ram detected: %d mb\n", (mbt->mem_lower + mbt->mem_upper)/1024);
-
-        new Vector<int>;
 
         // stops main exiting too soon
         for(;;) {

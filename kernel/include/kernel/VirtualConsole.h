@@ -4,6 +4,7 @@
 #include <kernel/devices/KeyboardDevice.h>
 #include <Types.h>
 #include <stdint.h>
+#include <Y/String.h>
 
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25
@@ -24,6 +25,9 @@ class VirtualConsole : public KeyboardListener {
     private:
         uint16_t* vgaBuffer;
         int row = 0, column = 0;
+
+        String inputStr;
+
 };
 
 #endif

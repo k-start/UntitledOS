@@ -1,0 +1,42 @@
+#ifndef STRING_H
+#define STRING_H
+
+#include <stdio.h>
+#include <kernel/kstdlib.h>
+
+class String {
+    public:
+        String();
+        String(const char *str);
+        ~String();
+
+        bool empty() const;
+
+        void append(const char &value);
+        void append(const String &value);
+
+        void reserve(unsigned int capacity);
+
+        unsigned int capacity() const { return m_capacity; }
+        unsigned int size() const { return m_size; }
+        int length() const { return (int)m_size; }
+
+        char &operator[](unsigned int index);
+        String &operator+=(const char &value);
+        String &operator+=(const String &str);
+        String &operator+=(const int &i);
+        String &operator+(const String &str);
+        // String &operator+(const int &i);
+
+        String &operator<<(const char &value);
+        
+        operator const char*() const;
+
+    private:
+        unsigned int m_capacity = 0;
+        unsigned int m_size = 0;
+        char *buffer;
+        
+};
+
+#endif

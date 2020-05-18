@@ -74,11 +74,11 @@ PMM::PMM(multiboot_info_t *mbt) {
 	address |= 1 << 0;
 	PageDirectoryVirtualAddress[(0x0 >> 22)] = address;
 
-	address = (uint32_t)(0x400000);
-	address |= 1 << 7;
-	address |= 1 << 1;
-	address |= 1 << 0;
-	PageDirectoryVirtualAddress[(0x400000 >> 22)] = address;
+	// address = (uint32_t)(0x400000);
+	// address |= 1 << 7;
+	// address |= 1 << 1;
+	// address |= 1 << 0;
+	// PageDirectoryVirtualAddress[(0x400000 >> 22)] = address;
 }
 
 void PMM::mmapSet(int bit) {
@@ -222,8 +222,9 @@ void PMM::freeBlocks(void* p, size_t size) {
 	uint32_t addr = (uint32_t)p;
 	int frame = addr / PMMNGR_BLOCK_SIZE;
 
-	for (uint32_t i = 0; i < size; i++)
+	for (uint32_t i = 0; i < size; i++) {
 		mmapUnset(frame+i);
+	}
 
 	usedBlocks -= size;
 }
