@@ -9,6 +9,7 @@ extern "C" {
     void abort(void);
 
     void itoa(int n, char str[]);
+    void __itoa(int i, unsigned int base, char buf[]);
 
     void *malloc(size_t size);
 }

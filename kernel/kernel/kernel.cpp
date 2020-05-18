@@ -8,16 +8,16 @@
 #include <kernel/devices/KeyboardDevice.h>
 #include <kernel/PIT.h>
 #include <kernel/RTC.h>
+#include <kernel/pmm.h>
 
 #include <Y/Vector.h>
 
 extern "C" {
-    // void kernel_main() {
+    
     void kernel_main(unsigned int ebx, unsigned int magic) {
         multiboot_info_t *mbt = (multiboot_info_t*)(ebx);
         
-        mbt->mmap_addr += 0xC0000000;
-        multiboot_memory_map_t* mmap = (multiboot_memory_map_t*) mbt->mmap_addr;
+        PMM pmm(mbt); // initialize physical memory manager
 
         gdtInstall();
         CPU::isrInstall();
@@ -27,8 +27,9 @@ extern "C" {
 
         PIT pit(IRQ0, 100);
         KeyboardDevice keyboard(IRQ1);
-        VirtualConsole vConsole;
         RTC rtc(IRQ8);
+
+        VirtualConsole vConsole;
 
         printf(" _    _       _   _ _   _          _  ____   _____ \n");
         printf("| |  | |     | | (_) | | |        | |/ __ \\ / ____|\n");
@@ -38,20 +39,11 @@ extern "C" {
         printf(" \\____/|_| |_|\\__|_|\\__|_|\\___|\\__,_|\\____/|_____/ \n\n");
         
         printf("UntitledOS Kernel\n");
-        sout("\n\nUntitledOS Kernel\n");
+        sout("UntitledOS Kernel\n");
 
-        // printf("Ram detected: %d kb\n", (mbt->mem_lower + mbt->mem_upper));
+        printf("Ram detected: %d mb\n", (mbt->mem_lower + mbt->mem_upper)/1024);
 
-        int useableMemory = 0;
-
-        for(int i = 0; i < mbt->mmap_length; i++) {
-            if(mmap[i].type == MULTIBOOT_MEMORY_AVAILABLE) {
-                sout("%d  addr: %d  len: %d  size: %d\n", i, mmap[i].addr, mmap[i].len, mmap[i].size);
-                useableMemory += mmap[i].len;
-            }
-        }
-
-        printf("Ram detected: %d mb\n", useableMemory/1024/1024);
+        new Vector<int>;
 
         // stops main exiting too soon
         for(;;) {

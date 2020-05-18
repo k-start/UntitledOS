@@ -67,7 +67,7 @@ libk.a: $(LIBK_OBJS)
 .cpp.o:
 	$(CC) -MD -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
  
-.cpp.S:
+.S.o:
 	$(CC) -MD -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
  
 .cpp.libk.o:

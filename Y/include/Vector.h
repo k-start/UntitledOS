@@ -7,6 +7,8 @@ template<typename T> class Vector {
     public:
         Vector() {  } 
 
+    private:
+        T x;
 };
 
 #endif

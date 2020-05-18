@@ -8,6 +8,7 @@ SECTIONS
 	. = 0xC0100000;
 	/* Add a symbol that indicates the start address of the kernel. */
 	_kernel_start = .;
+	_kernel_start_physical = . - 0xC0000000;
 	.text ALIGN (4K) : AT (ADDR (.text) - 0xC0000000)
 	{
 		*(.text)
@@ -28,4 +29,6 @@ SECTIONS
 	}
 	/* Add a symbol that indicates the end address of the kernel. */
 	_kernel_end = .;
+	_kernel_end_physical = . - 0xC0000000;
+	_kernel_size = _kernel_end - _kernel_start;
 }

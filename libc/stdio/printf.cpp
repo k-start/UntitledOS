@@ -63,7 +63,7 @@ int printf(const char* __restrict format, ...) {
 			written += len;
 		} else if(*format == 'd') {
 			format++;
-			char str[10];
+			char str[20];
 			itoa((int)va_arg(parameters, int), str);
 			size_t len = strlen(str);
 			if(maxrem < len) {
@@ -73,7 +73,19 @@ int printf(const char* __restrict format, ...) {
 			if(!print(str, len))
 				return -1;
 			written += len;
-		}else {
+		} else if(*format == 'x') {
+			format++;
+			char str[32];
+			__itoa((int)va_arg(parameters, unsigned int), 16, str);
+			size_t len = strlen(str);
+			if(maxrem < len) {
+				// TODO: Set errno to EOVERFLOW.
+				return -1;
+			}
+			if(!print(str, len))
+				return -1;
+			written += len;
+		} else {
 			format = format_begun_at;
 			size_t len = strlen(format);
 			if (maxrem < len) {
