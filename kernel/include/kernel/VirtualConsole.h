@@ -5,6 +5,7 @@
 #include <Types.h>
 #include <stdint.h>
 #include <Y/String.h>
+#include <Y/Vector.h>
 
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25
@@ -32,6 +33,8 @@ class VirtualConsole : public KeyboardListener {
 
         String inputStr;
         String previousCommand;
+        Vector<String> previousCommands;
+        int commandIndex = 0;
 
 };
 

@@ -4,6 +4,7 @@
 #include <kernel/pmm.h>
 #include <string.h>
 #include <kernel/RTC.h>
+#include <kernel/PIT.h>
 
 static char map[0x80] = {
     0, '\033', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 0x08, '\t',
@@ -81,11 +82,27 @@ void VirtualConsole::keyStateChanged(u8 raw, bool pressed) {
             case 0x2A: case 0x1D: case 0x3A: case 0x0F: case 0x36: case 0x38: case 0x5C:
                 
                 break;
-            // arrows
-            case 0x4B: case 0x50: case 0x4D: case 0x48:
-                clearCommand();
-                inputStr = previousCommand;
-                printf(inputStr.c_str());
+            // up arrow
+            case 0x48:
+                if(commandIndex > 0) {
+                    clearCommand();
+                    commandIndex--;
+                    inputStr = previousCommands[commandIndex];
+                    printf(inputStr.c_str());
+                }
+                break;
+            // down arrow
+            case 0x50:
+                if(commandIndex < previousCommands.size()) {
+                    clearCommand();
+                    commandIndex++;
+                    inputStr = previousCommands[commandIndex];
+                    printf(inputStr.c_str());
+                }
+                break;
+            case 0x4B: 
+                break;
+            case 0x4D:
                 break;
             default:
                 char c = (shifted | capsLock) ? shift_map[ch] : map[ch];
@@ -144,8 +161,8 @@ void VirtualConsole::newCommand() {
 
 void VirtualConsole::runCommand(String command) {
     if(command.length() > 0) {
-        previousCommand = command;
-
+        previousCommands.push_back(command);
+        commandIndex++;
 
         // switch (command) {
         //     case "time":
@@ -158,7 +175,9 @@ void VirtualConsole::runCommand(String command) {
             printf(RTC::the->getTime().c_str());
         } else if(command == "date") {
             printf(RTC::the->getDate().c_str());
-        } else if(command == "ram") {
+        } else if(command == "uptime") {
+            printf(PIT::the->getUptimeStr().c_str());
+        }  else if(command == "ram") {
             printf("%d mb", PMM::the->memorySize/1024 + 1);
         } else if(command == "mem") {
             printf("Size: %d kb\n", PMM::the->memorySize);
