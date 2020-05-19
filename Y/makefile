@@ -69,8 +69,8 @@ clean:
 install: install-headers install-libs
  
 install-headers:
-	mkdir -p $(DESTDIR)$(INCLUDEDIR)/Y
-	cp -R --preserve=timestamps include/. $(DESTDIR)$(INCLUDEDIR)/Y/.
+	mkdir -p $(DESTDIR)$(INCLUDEDIR)/
+	cp -R --preserve=timestamps include/. $(DESTDIR)$(INCLUDEDIR)/.
  
 install-libs: $(BINARIES)
 	mkdir -p $(DESTDIR)$(LIBDIR)

@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <kernel/ports.h>
 
+RTC *RTC::the;
+
 RTC::RTC(u8 IRQNumber) : IRQHandler(IRQNumber) {
     asm("cli");
     outb(0x70, 0x8A);	// select Status Register A, and disable NMI (by setting the 0x80 bit)
@@ -15,6 +17,8 @@ RTC::RTC(u8 IRQNumber) : IRQHandler(IRQNumber) {
     outb(0x70, 0x8B);		// set the index again (a read will reset the index to register D)
     outb(0x71, prev | 0x40);
     asm("sti");
+
+    the = this;
 }
 
 void RTC::handleIRQ() {
@@ -43,4 +47,42 @@ void RTC::handleIRQ() {
 
     // printf("%d/%d/%d\n", day, month, year);
     // printf("%d:%d:%d\n", hour-1, minute, second);
+}
+
+String RTC::getTime() {
+    String time;
+    if(hour-2 < 10 && hour-2 != 0) {
+        time += 0;
+    }
+    time += (hour-2) == 0 ? 12 : (hour-2);
+    time += ':';
+    if(minute < 10) {
+        time += 0;
+    }
+    time += minute;
+    time += ':';
+    if(second < 10) {
+        time += 0;
+    }
+    time += second;
+    return time;
+}
+
+String RTC::getDate() {
+    String date;
+    if(day < 10) {
+        date += 0;
+    }
+    date += day;
+    date += '/';
+    if(month < 10) {
+        date += 0;
+    }
+    date += month;
+    date += '/';
+    if(year < 10) {
+        date += 0;
+    }
+    date += year;
+    return date;
 }

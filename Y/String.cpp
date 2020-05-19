@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <kernel/kstdio.h>
 
 String::String() {
     buffer = 0;
@@ -9,19 +10,32 @@ String::String() {
     m_size = 0;
 }
 
-// potentially bad implementation?
 String::String(const char *str) {
     size_t len = strlen(str);
     buffer = new char[len + 1];
     memcpy(buffer, str, len);
     buffer[len] = '\0';
-    // buffer = (char*)str;
+    
     m_capacity = len;
     m_size = len;
 }
 
+String::String(const String &str) {
+    buffer = new char[str.length() + 1];
+    
+    memcpy(buffer, str.c_str(), str.length());
+
+    buffer[str.length()] = '\0';
+    m_capacity = str.length();
+    m_size = str.length();
+}
+
+
 String::~String() {
-    delete[] buffer;
+    if(buffer != NULL) {
+        delete[] buffer;
+        buffer = NULL;
+    }
 }
 
 bool String::empty() const {
@@ -59,13 +73,38 @@ void String::reserve(unsigned int capacity) {
         newBuffer[i] = buffer[i];
     }
 
-    m_capacity = capacity;
+    if(m_capacity != 0) {
+        delete[] buffer;
+        buffer = 0;
+    }
 
-    delete[] buffer;
+    m_capacity = capacity;
+    
     buffer = newBuffer;
 }
 
+void String::pop_back() {
+    if(m_size > 0) {
+        buffer[m_size-1] = '\0';
+        m_size--;
+    }
+}
+
+void String::clear() {
+    memset(buffer, '\0', m_capacity);
+    m_size = 0;
+}
+
+char *String::c_str() const {
+    buffer[m_size] = '\0';
+    return buffer;
+}
+
 char &String::operator[](unsigned int index) {
+    return buffer[index];
+}
+
+char &String::operator[](unsigned int index) const {
     return buffer[index];
 }
 
@@ -111,6 +150,33 @@ String &String::operator<<(const char &value) {
     return *this;
 }
 
-String::operator const char*() const {
-    return buffer;
+String &String::operator=(const String &str) {
+    delete[] buffer;
+
+    buffer = new char[str.length() + 1];
+    
+    memcpy(buffer, str.c_str(), str.length());
+
+    buffer[str.length()] = '\0';
+    m_capacity = str.length();
+    m_size = str.length();
+
+    return *this;
 }
+
+bool String::operator==(const String &str) {
+    if(str.length() != length()) {
+        return false;
+    }
+    for(int i = 0; i < length(); i++) {
+        if(str[i] != buffer[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// String::operator const char*() const {
+//     buffer[m_size] = '\0';
+//     return buffer;
+// }

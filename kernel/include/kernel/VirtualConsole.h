@@ -22,11 +22,16 @@ class VirtualConsole : public KeyboardListener {
         void putchar(char c);
         void scroll();
 
+        void newCommand();
+        void runCommand(String command);
+        void clearCommand();
+
     private:
         uint16_t* vgaBuffer;
         int row = 0, column = 0;
 
         String inputStr;
+        String previousCommand;
 
 };
 

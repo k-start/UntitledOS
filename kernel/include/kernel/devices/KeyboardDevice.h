@@ -23,10 +23,10 @@ class KeyboardDevice : public IRQHandler {
 
         void registerListener(KeyboardListener *listener);
 
-    private:
         bool shifted = false;
         bool capsLock = false;
-        
+
+    private:
         // FIX change to vector once implemented
         KeyboardListener *listeners;
 };

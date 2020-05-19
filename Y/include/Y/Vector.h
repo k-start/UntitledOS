@@ -70,8 +70,10 @@ void Vector<T>::push_back(const T &value) {
 
 template <typename T>
 void Vector<T>::pop_back() {
-    (reinterpret_cast<T*>(buffer)[m_size-1]).~T();
-    m_size--;
+    if(m_size > 0) {
+        (reinterpret_cast<T*>(buffer)[m_size-1]).~T();
+        m_size--;
+    }
 }
 
 template<class T>
