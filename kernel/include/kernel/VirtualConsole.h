@@ -32,7 +32,6 @@ class VirtualConsole : public KeyboardListener {
         int row = 0, column = 0;
 
         String inputStr;
-        String previousCommand;
         Vector<String> previousCommands;
         int commandIndex = 0;
 

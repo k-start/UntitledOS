@@ -162,7 +162,7 @@ void VirtualConsole::newCommand() {
 void VirtualConsole::runCommand(String command) {
     if(command.length() > 0) {
         previousCommands.push_back(command);
-        commandIndex++;
+        commandIndex = previousCommands.size();
 
         // switch (command) {
         //     case "time":
