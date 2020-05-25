@@ -14,7 +14,6 @@ extern "C" void* _kernel_start_physical;
 extern "C" void* _kernel_end;
 extern "C" void* _kernel_end_physical;
 extern "C" void* _kernel_size;
-extern "C" uint32_t PageDirectoryVirtualAddress[1024];
 
 char* strMemoryTypes[] = {
 	"Available",		//type==1
@@ -31,13 +30,14 @@ PMM::PMM(multiboot_info_t *mbt) {
     int useableMemory = mbt->mem_lower + mbt->mem_upper;
 
     memorySize = useableMemory;
-    usedBlocks = (useableMemory * 1024) / PMMNGR_BLOCK_SIZE;
-    maxBlocks = (useableMemory * 1024) / PMMNGR_BLOCK_SIZE;
+    usedBlocks = (useableMemory * 1024) / BLOCK_SIZE;
+    maxBlocks = (useableMemory * 1024) / BLOCK_SIZE;
     memoryMap = (uint32_t*)(&_kernel_end);
 
-    memset (memoryMap, 0xf, maxBlocks / PMMNGR_BLOCKS_PER_BYTE );
+    memset(memoryMap, 0xf, maxBlocks / BLOCKS_PER_BYTE);
 
     mbt->mmap_addr += 0xC0000000;
+
     multiboot_memory_map_t *mmap = (multiboot_memory_map_t*)mbt->mmap_addr;
 
     sout("**************** MEMORY MAP ****************\n");
@@ -55,8 +55,10 @@ PMM::PMM(multiboot_info_t *mbt) {
     sout("********************************************\n");
 
     // deinitRegion(0x100000, size_t(&_kernel_size));
-    // deinitRegion(0x0, 0x9FC00);
-    deinitRegion(int(&_kernel_start_physical), int(&_kernel_size) + 0x1000);
+    // deinitRegion(int(&_kernel_start_physical), int(&_kernel_size) + 0x1000);
+	
+	// FIX ME map kernel into virtual memory properly so physical memory can be mapped more efficiently
+	deinitRegion(0x0, 0x400000);
 
     sout("Kernel start: 0x%x\n", &_kernel_start);
     sout("Kernel physical start: 0x%x\n", &_kernel_start_physical);
@@ -64,21 +66,9 @@ PMM::PMM(multiboot_info_t *mbt) {
     sout("Kernel physical end: 0x%x\n", &_kernel_end_physical);
     sout("Kernel size: 0x%x\n", &_kernel_size);
     sout("Ram detected: %d mb\n", (useableMemory/1024 + 1));
-    sout("Max blocks: %d  memoryMap size: 0x%x\n", maxBlocks, maxBlocks / PMMNGR_BLOCKS_PER_BYTE);
+    sout("Max blocks: %d  memoryMap size: 0x%x\n", maxBlocks, maxBlocks / BLOCKS_PER_BYTE);
 
     sout("Available Blocks: %d\n", maxBlocks - usedBlocks);
-
-	uint32_t address = (uint32_t)(0x0);
-	address |= 1 << 7;
-	address |= 1 << 1;
-	address |= 1 << 0;
-	PageDirectoryVirtualAddress[(0x0 >> 22)] = address;
-
-	// address = (uint32_t)(0x400000);
-	// address |= 1 << 7;
-	// address |= 1 << 1;
-	// address |= 1 << 0;
-	// PageDirectoryVirtualAddress[(0x400000 >> 22)] = address;
 }
 
 void PMM::mmapSet(int bit) {
@@ -144,8 +134,8 @@ int PMM::mmapFirstFreeS(size_t size) {
 }
 
 void PMM::initRegion(uint32_t base, size_t size) {
-	int align = base / PMMNGR_BLOCK_SIZE;
-	int blocks = size / PMMNGR_BLOCK_SIZE;
+	int align = base / BLOCK_SIZE;
+	int blocks = size / BLOCK_SIZE;
  
 	for (; blocks > 0; blocks--) {
 		mmapUnset(align++);
@@ -156,8 +146,8 @@ void PMM::initRegion(uint32_t base, size_t size) {
 }
 
 void PMM::deinitRegion(uint32_t base, size_t size) {
-	int align = base / PMMNGR_BLOCK_SIZE;
-	int blocks = size / PMMNGR_BLOCK_SIZE;
+	int align = base / BLOCK_SIZE;
+	int blocks = size / BLOCK_SIZE;
  
 	for (; blocks > 0; blocks--) {
 		mmapSet(align++);
@@ -180,13 +170,14 @@ void* PMM::allocBlock() {
 
 	mmapSet(frame);
 
-	uint32_t addr = frame * PMMNGR_BLOCK_SIZE;
+	uint32_t addr = frame * BLOCK_SIZE;
 	usedBlocks++;
  
 	return (void*)addr;
 }
 
 void* PMM::allocBlocks(size_t size) {
+	sout("ALLOC");
 	if (maxBlocks - usedBlocks <= size) {
         sout("OUT OF MEMORY\n");
 		return 0;	//not enough space
@@ -203,7 +194,7 @@ void* PMM::allocBlocks(size_t size) {
 		mmapSet(frame+i);
     }
     
-	uint32_t addr = frame * PMMNGR_BLOCK_SIZE;
+	uint32_t addr = frame * BLOCK_SIZE;
 	usedBlocks += size;
 
 	return (void*)addr;
@@ -211,7 +202,7 @@ void* PMM::allocBlocks(size_t size) {
 
 void PMM::freeBlock(void* p) {
 	uint32_t addr = (uint32_t)p;
-	int frame = addr / PMMNGR_BLOCK_SIZE;
+	int frame = addr / BLOCK_SIZE;
  
 	mmapUnset(frame);
  
@@ -220,7 +211,7 @@ void PMM::freeBlock(void* p) {
 
 void PMM::freeBlocks(void* p, size_t size) {
 	uint32_t addr = (uint32_t)p;
-	int frame = addr / PMMNGR_BLOCK_SIZE;
+	int frame = addr / BLOCK_SIZE;
 
 	for (uint32_t i = 0; i < size; i++) {
 		mmapUnset(frame+i);

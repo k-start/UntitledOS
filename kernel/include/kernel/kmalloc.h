@@ -1,8 +1,6 @@
 #ifndef KSTDLIB_H
 #define KSTDLIB_H
 
-#pragma once
-
 #include <Types.h>
 #include <stddef.h>
 

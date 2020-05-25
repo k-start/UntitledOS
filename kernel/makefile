@@ -38,6 +38,7 @@ $(ARCHDIR)/ports.o \
 $(ARCHDIR)/CPU.o \
 $(ARCHDIR)/VirtualConsole.o \
 $(ARCHDIR)/pmm.o \
+$(ARCHDIR)/vmm.o \
 kernel/kernel.o \
 devices/KeyboardDevice.o \
 IRQHandler.o \

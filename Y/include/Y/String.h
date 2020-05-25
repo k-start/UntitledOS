@@ -2,7 +2,7 @@
 #define STRING_H
 
 #include <stdio.h>
-#include <kernel/kstdlib.h>
+#include <kernel/kmalloc.h>
 
 class String {
     public:

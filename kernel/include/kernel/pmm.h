@@ -5,9 +5,9 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#define PMMNGR_BLOCKS_PER_BYTE 8
-#define PMMNGR_BLOCK_SIZE 4096
-#define PMMNGR_BLOCK_ALIGN PMMNGR_BLOCK_SIZE
+#define BLOCKS_PER_BYTE 8
+#define BLOCK_SIZE 4096
+#define BLOCK_ALIGN BLOCK_SIZE
 
 class PMM {
 

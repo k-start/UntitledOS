@@ -4,18 +4,23 @@
 #include <kernel/gdt.h>
 #include <kernel/CPU.h>
 #include <kernel/VirtualConsole.h>
-#include <kernel/kstdlib.h>
+#include <kernel/kmalloc.h>
 #include <kernel/devices/KeyboardDevice.h>
 #include <kernel/PIT.h>
 #include <kernel/RTC.h>
 #include <kernel/pmm.h>
+#include <kernel/vmm.h>
 
 extern "C" {
+
+    // extern uint32_t PageDirectoryVirtualAddress;
     
     void kernel_main(unsigned int ebx, unsigned int magic) {
+        sout("kernel %x\n", ebx);
         multiboot_info_t *mbt = (multiboot_info_t*)(ebx);
         
         PMM pmm(mbt); // initialize physical memory manager
+        VMM vmm(&pmm);
 
         gdtInstall();
         CPU::isrInstall();

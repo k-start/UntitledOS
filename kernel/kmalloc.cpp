@@ -1,11 +1,11 @@
-#include <kernel/kstdlib.h>
+#include <kernel/kmalloc.h>
 #include <kernel/kstdio.h>
 #include <kernel/pmm.h>
 #include <string.h>
 
 void *kmalloc(size_t size) {
-	size_t blocks = size/PMMNGR_BLOCK_SIZE + 1;
-	if(size % PMMNGR_BLOCK_SIZE == 0) {
+	size_t blocks = size/BLOCK_SIZE + 1;
+	if(size % BLOCK_SIZE == 0) {
 		blocks--;
 	}
 
@@ -15,15 +15,15 @@ void *kmalloc(size_t size) {
 		return 0;
 	}
 	
-	memset(addr, 0x0, blocks * PMMNGR_BLOCK_SIZE);
+	// memset(addr, 0x0, blocks * PMMNGR_BLOCK_SIZE);
 	sout("KMALLOC: 0x%x - %d block(s) - size: 0x%x\n", addr, blocks, size);
 	return addr;
 }
 
 void kfree(void *p, size_t size) {
-	size_t blocks = size/PMMNGR_BLOCK_SIZE + 1;
+	size_t blocks = size/BLOCK_SIZE + 1;
 
-	if(size % PMMNGR_BLOCK_SIZE == 0) {
+	if(size % BLOCK_SIZE == 0) {
 		blocks--;
 	}
 

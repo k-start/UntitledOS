@@ -11,7 +11,7 @@ extern "C" {
     void itoa(int n, char str[]);
     void __itoa(int i, unsigned int base, char buf[]);
 
-    void *malloc(size_t size);
+    // void *malloc(size_t size);
 }
 
 #endif
