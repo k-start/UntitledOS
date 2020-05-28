@@ -8,6 +8,13 @@ MEMINFO     equ  1<<1             ; provide memory map
 FLAGS       equ  MODULEALIGN | MEMINFO  ; this is the Multiboot 'flag' field
 MAGIC       equ    0x1BADB002     ; 'magic number' lets bootloader find the header
 CHECKSUM    equ -(MAGIC + FLAGS)  ; checksum required
+
+section .multiboot
+align 4
+MultiBootHeader:
+    dd MAGIC
+    dd FLAGS
+    dd CHECKSUM
  
 ; This is the virtual base address of kernel space. It must be used to convert virtual
 ; addresses into physical addresses until paging is enabled. Note that this is not
@@ -16,8 +23,15 @@ CHECKSUM    equ -(MAGIC + FLAGS)  ; checksum required
 KERNEL_VIRTUAL_BASE equ 0xC0000000                  ; 3GB
 KERNEL_PAGE_NUMBER equ (KERNEL_VIRTUAL_BASE >> 22)  ; Page directory index of kernel's 4MB PTE.
  
+; reserve initial kernel stack space -- that's 16k.
+STACKSIZE equ 0x4000
+  
+section .bootstrap_stack, "aw", @nobits
+align 32
+stack:
+    resb STACKSIZE      ; reserve 16k stack on a uint64_t boundary
  
-section .data
+section .bss, "aw", @nobits
 align 0x1000
 global BootPageDirectory
 BootPageDirectory:
@@ -33,19 +47,9 @@ BootPageDirectory:
     ; This page directory entry defines a 4MB page containing the kernel.
     dd 0x00000083
     times (1024 - KERNEL_PAGE_NUMBER - 2) dd 0  ; Pages after the kernel image.
-    dd 0x107003 ; Add the Page Directory to the final entry of the Page Directory to enable recursive mapping
- 
- 
+    dd 0x10A000 ; Add the Page Directory to the final entry of the Page Directory to enable recursive mapping
+
 section .text
-align 4
-MultiBootHeader:
-    dd MAGIC
-    dd FLAGS
-    dd CHECKSUM
- 
-; reserve initial kernel stack space -- that's 16k.
-STACKSIZE equ 0x4000
- 
 _loader:
     ; NOTE: Until paging is set up, the code must be position-independent and use physical
     ; addresses, not virtual ones!
@@ -90,8 +94,3 @@ StartInHigherHalf:
     call kernel_main             ; call kernel proper
     hlt                          ; halt machine should kernel return
  
- 
-section .bss
-align 32
-stack:
-    resb STACKSIZE      ; reserve 16k stack on a uint64_t boundary

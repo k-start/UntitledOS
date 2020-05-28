@@ -10,6 +10,23 @@ extern "C" uint32_t BootPageDirectory[1024];
 VMM::VMM(PMM *pmm) {
     the = this;
     this->pmm = pmm;
+    BootPageDirectory[1023] = ((uint32_t)&BootPageDirectory - 0xC0000000) | 3;
+    sout("0x%x\n", &BootPageDirectory);
+}
+
+// Fix me - do something when address is already in use, overwrite? error?
+void *VMM::allocPage(uint32_t address) {
+    void *block = pmm->allocBlock();
+    mapPage(block, (void*)address);
+    return (void*)address;
+}
+
+// Fix me - do something when address is already in use, overwrite? error?
+void *VMM::allocPages(unsigned int pages, uint32_t address) {
+    for(int i = 0; i < pages; i++) {
+        allocPage(address + (0x1000 * i));
+    }
+    return (void*)address;
 }
 
 void VMM::mapPage(void *phys, void *virt) {

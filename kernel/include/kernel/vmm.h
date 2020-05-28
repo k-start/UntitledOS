@@ -46,7 +46,9 @@ class VMM {
         };
 
         VMM(PMM *pmm);
-        
+
+        void *allocPage(uint32_t address);
+        void *allocPages(unsigned int pages, uint32_t address);
         void mapPage(void *phys, void *virt);
 
         static VMM *the;
