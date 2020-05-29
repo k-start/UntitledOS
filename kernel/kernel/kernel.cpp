@@ -10,6 +10,7 @@
 #include <kernel/RTC.h>
 #include <kernel/pmm.h>
 #include <kernel/vmm.h>
+#include <kernel/heap.h>
 
 extern "C" {
 
@@ -21,6 +22,7 @@ extern "C" {
         
         PMM pmm(mbt); // initialize physical memory manager
         VMM vmm(&pmm);
+        Heap heap;
 
         gdtInstall();
         CPU::isrInstall();

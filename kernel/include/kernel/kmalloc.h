@@ -4,6 +4,8 @@
 #include <Types.h>
 #include <stddef.h>
 
+#define heapStart 0xD0000000
+
 void *kmalloc(size_t size);
 void kfree(void *p, size_t size);
 

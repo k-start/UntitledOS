@@ -26,6 +26,14 @@ class PMM {
         void freeBlock(void* p);
         void freeBlocks(void* p, size_t size);
 
+
+        // fix me - move elsewhere
+        static void *kmem(size_t size) {
+            void *addr = (void*)kernelEnd;
+            kernelEnd += size;
+            return addr;
+        }
+
         static PMM *the;
         static uint32_t memorySize;
         static uint32_t usedBlocks;
@@ -34,6 +42,7 @@ class PMM {
 
     private:
         multiboot_info_t *mbt;
+        static uint32_t kernelEnd;
 
 };
 

@@ -8,6 +8,7 @@ uint32_t PMM::memorySize;
 uint32_t PMM::usedBlocks;
 uint32_t PMM::maxBlocks;
 uint32_t* PMM::memoryMap;
+uint32_t PMM::kernelEnd;;
 
 extern "C" void* _kernel_start;
 extern "C" void* _kernel_start_physical;
@@ -59,6 +60,8 @@ PMM::PMM(multiboot_info_t *mbt) {
 	
 	// FIX ME map kernel into virtual memory properly so physical memory can be mapped more efficiently
 	deinitRegion(0x0, 0x400000);
+
+	kernelEnd = uint32_t(&_kernel_end) + maxBlocks / BLOCKS_PER_BYTE;
 
     sout("Kernel start: 0x%x\n", &_kernel_start);
     sout("Kernel physical start: 0x%x\n", &_kernel_start_physical);
