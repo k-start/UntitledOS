@@ -39,6 +39,6 @@ void kfree(void *p, size_t size) {
 
 	// sout("KFREE: 0x%x - %d blocks - size: 0x%x\n", uint32_t(p), blocks, size);
 	// PMM::the->freeBlocks(p, blocks);
-	// sout("KFREE: 0x%x\n", uint32_t(p));
+	sout("KFREE: 0x%x\n", uint32_t(p));
 	Heap::the->free(p);
 }

@@ -10,30 +10,29 @@ class Heap {
 
     public:
 
-        typedef struct SlabPage {
-            SlabPage *next;
+        typedef struct SlabFrame {
+            SlabFrame *next;
             uint32_t startAddr;
             uint32_t endAddr;
-        } SlabPage;
+        } SlabFrame;
 
         typedef struct Slab {
             size_t allocSize; // the amount of bytes this slab deals with
-            SlabPage *firstPage; // pointer to the first page of memory
-            SlabPage *lastPage; // pointer to the last page of memory
-            size_t slabSize; // amount of pages in the slab
+            SlabFrame *firstFrame; // pointer to the first frame of memory
+            size_t slabSize; // amount of frames in the slab
         } Slab;
 
         Heap();
 
         void *alloc(size_t size);
-        void free(void *p) {}
+        void free(void *p);
 
         static Heap *the;
 
     private:
         void *slabAlloc(Slab &slab, Slab &allocedSlab);
         void moreMem(Slab &slab);
-        SlabPage *newSlabPage();
+        SlabFrame *newSlabFrame();
 
         uint16_t heapStartOffset = 0;
 
