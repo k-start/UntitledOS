@@ -10,9 +10,9 @@ Untitled OS is an Operating System that I am building to expand my knowledge of 
 - Custom shell with a couple of commands
 - Physical Memory Manager
 - Paging with page mapping
+- Kernel Heap management
 
 ### Upcoming Features
-- Kernel Heap management
 - File System access
 - Userspace with user processes
 
