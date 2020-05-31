@@ -37,9 +37,9 @@ $(ARCHDIR)/interrupts.o \
 $(ARCHDIR)/ports.o \
 $(ARCHDIR)/CPU.o \
 $(ARCHDIR)/VirtualConsole.o \
-$(ARCHDIR)/pmm.o \
-$(ARCHDIR)/vmm.o \
-$(ARCHDIR)/heap.o \
+pmm.o \
+vmm.o \
+heap.o \
 kernel/kernel.o \
 devices/KeyboardDevice.o \
 IRQHandler.o \

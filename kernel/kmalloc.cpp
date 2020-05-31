@@ -30,7 +30,7 @@ void *kmalloc(size_t size) {
 	return addr;
 }
 
-void kfree(void *p, size_t size) {
+void kfree(void *p) {
 	// size_t blocks = size/BLOCK_SIZE + 1;
 
 	// if(size % BLOCK_SIZE == 0) {

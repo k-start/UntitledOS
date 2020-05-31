@@ -24,6 +24,7 @@ Heap::Heap() {
     }
 }
 
+// FIX ME - potentially adding a smaller slab size and removing the 2048+ slab to just allocate pages
 void *Heap::alloc(size_t size) {
     if(size > 4096) {
         sout("CANT ALLOC SIZE MORE THAN 1 PAGE\n");
@@ -40,6 +41,7 @@ void *Heap::alloc(size_t size) {
     return 0;
 }
 
+// free with unknown amount of memory
 void Heap::free(void *p) {
     uint32_t address = (uint32_t)p;
 

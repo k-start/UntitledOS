@@ -7,7 +7,7 @@
 #define heapStart 0xD0000000
 
 void *kmalloc(size_t size);
-void kfree(void *p, size_t size);
+void kfree(void *p);
 
 inline void *operator new(size_t size) {
     return kmalloc(size);
@@ -18,15 +18,15 @@ inline void *operator new[](size_t size) {
 }
  
 inline void operator delete(void *p, size_t size) {
-    kfree(p, size);
+    kfree(p);
 }
  
 inline void operator delete[](void *p, size_t size) {
-    kfree(p, size);
+    kfree(p);
 }
 
 inline void operator delete[](void *p) {
-    kfree(p, 1);
+    kfree(p);
 }
 
 
