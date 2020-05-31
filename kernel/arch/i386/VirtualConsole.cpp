@@ -64,7 +64,7 @@ void VirtualConsole::keyStateChanged(u8 raw, bool pressed) {
     bool capsLock = KeyboardDevice::keyboardDevice->capsLock;
 
     if(pressed) {
-        sout("0x%x\n", ch);
+        // sout("0x%x\n", ch);
         switch (ch) {
             case 0x0E:
                 if(inputStr.length() > 0) {
@@ -88,7 +88,6 @@ void VirtualConsole::keyStateChanged(u8 raw, bool pressed) {
                     clearCommand();
                     commandIndex--;
                     inputStr = previousCommands[commandIndex];
-                    printf(inputStr.c_str());
                 }
                 break;
             // down arrow
@@ -97,7 +96,6 @@ void VirtualConsole::keyStateChanged(u8 raw, bool pressed) {
                     clearCommand();
                     commandIndex++;
                     inputStr = previousCommands[commandIndex];
-                    printf(inputStr.c_str());
                 }
                 break;
             case 0x4B: 

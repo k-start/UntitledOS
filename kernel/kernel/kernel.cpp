@@ -11,6 +11,7 @@
 #include <kernel/pmm.h>
 #include <kernel/vmm.h>
 #include <kernel/heap.h>
+#include <kernel/Filesystem/VFS.h>
 
 extern "C" {
 
@@ -20,11 +21,15 @@ extern "C" {
         sout("kernel %x\n", ebx);
         multiboot_info_t *mbt = (multiboot_info_t*)(ebx);
         
-        PMM pmm(mbt); // initialize physical memory manager
-        VMM vmm(&pmm);
-        Heap heap;
+         // initialize memory managers
+        PMM pmm(mbt); // physical
+        VMM vmm(&pmm); // virtual
+        Heap heap; // kernel heap
 
-        gdtInstall();
+        // initialise the virtual filesystem
+        VFS vfs();
+
+        gdtInstall(); // FIX ME - move to CPU
         CPU::isrInstall();
 
         // enable interrupts

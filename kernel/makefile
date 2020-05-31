@@ -48,6 +48,7 @@ RTC.o \
 kprintf.o \
 kputchar.o \
 kmalloc.o \
+Filesystem/VFS.o \
  
 OBJS=\
 $(ARCHDIR)/crti.o \
