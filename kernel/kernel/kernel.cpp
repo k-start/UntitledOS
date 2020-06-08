@@ -12,10 +12,24 @@
 #include <kernel/vmm.h>
 #include <kernel/heap.h>
 #include <kernel/Filesystem/VFS.h>
+#include <kernel/Filesystem/FDC.h>
+#include <kernel/ports.h>
 
 extern "C" {
 
     // extern uint32_t PageDirectoryVirtualAddress;
+
+    static const char * drive_types[8] = {
+        "none",
+        "360kB 5.25\"",
+        "1.2MB 5.25\"",
+        "720kB 3.5\"",
+
+        "1.44MB 3.5\"",
+        "2.88MB 3.5\"",
+        "unknown type",
+        "unknown type"
+    };
     
     void kernel_main(unsigned int ebx, unsigned int magic) {
         sout("kernel %x\n", ebx);
@@ -32,7 +46,10 @@ extern "C" {
         gdtInstall(); // FIX ME - move to CPU
         CPU::isrInstall();
 
-        // enable interrupts
+        // Floppy disk controller
+        FDC fdc(IRQ6);
+
+        // enable interruptss_
         asm volatile("sti");
 
         PIT pit(IRQ0, 100);
@@ -52,6 +69,14 @@ extern "C" {
         sout("UntitledOS Kernel\n");
 
         printf("Ram detected: %d mb\n", (mbt->mem_lower + mbt->mem_upper)/1024 + 1);
+
+
+        outb(0x70, 0x10);
+        unsigned drives = inb(0x71);
+
+        sout(" - Floppy drive 0: %s\n", drive_types[drives >> 4]);
+        sout(" - Floppy drive 1: %s\n", drive_types[drives & 0xf]);
+
 
         vConsole.newCommand();
 
