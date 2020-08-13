@@ -88,19 +88,25 @@ void VirtualConsole::keyStateChanged(u8 raw, bool pressed) {
                     clearCommand();
                     commandIndex--;
                     inputStr = previousCommands[commandIndex];
+                    printf("%s", inputStr.c_str());
                 }
                 break;
             // down arrow
             case 0x50:
-                if(commandIndex < previousCommands.size()) {
+                if(commandIndex < previousCommands.size() - 1) {
                     clearCommand();
                     commandIndex++;
                     inputStr = previousCommands[commandIndex];
+                    printf("%s", inputStr.c_str());
                 }
                 break;
             case 0x4B: 
                 break;
             case 0x4D:
+                break;
+            // escape
+            case 0x01:
+                clearCommand();
                 break;
             default:
                 char c = (shifted | capsLock) ? shift_map[ch] : map[ch];
@@ -195,6 +201,8 @@ void VirtualConsole::clearCommand() {
         putchar(' ');
         column--;
     }
+
+    inputStr = "";
 
     updateCursor(column, row);
 }
