@@ -16,9 +16,14 @@ class PIT : public IRQHandler {
 
         static PIT *the;
 
+        void sleep(int ms);
+
     private:
         int ticks = 0;
         int seconds = 0;
+
+        bool sleeping = false;
+        int sleepMS = 0;
 
 };
 

@@ -46,9 +46,6 @@ extern "C" {
         gdtInstall(); // FIX ME - move to CPU
         CPU::isrInstall();
 
-        // Floppy disk controller
-        FDC fdc(IRQ6);
-
         // enable interruptss_
         asm volatile("sti");
 
@@ -77,6 +74,8 @@ extern "C" {
         sout(" - Floppy drive 0: %s\n", drive_types[drives >> 4]);
         sout(" - Floppy drive 1: %s\n", drive_types[drives & 0xf]);
 
+        // Floppy disk controller - BROKEN
+        FDC fdc(IRQ6);
 
         vConsole.newCommand();
 

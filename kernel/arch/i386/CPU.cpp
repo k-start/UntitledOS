@@ -142,6 +142,7 @@ void isrHandler(registers_t *r) {
 
 void irqHandler(registers_t *r) {
     if (r->int_no >= 40) outb(0xA0, 0x20); 
+
     outb(0x20, 0x20);
 
     if (interruptHandlers[r->int_no - 32] != nullptr) {

@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <kernel/ports.h>
+#include <kernel/kstdio.h>
 
 PIT *PIT::the;
 
@@ -22,10 +23,26 @@ void PIT::handleIRQ() {
     if(ticks%100 == 0) {
         seconds++;
     }
+
+    if(sleeping) {
+        sleepMS += 10;
+    }
 }
 
 String PIT::getUptimeStr() {
     String string;
     string += seconds;
     return string;
+}
+
+// FIX-ME VERY BAD IMPLEMENTATION
+void PIT::sleep(int ms) {
+    sleepMS = 0;
+    sleeping = true;
+
+    int lastMS = 0;
+    while(sleepMS < ms) {
+        sout("");
+    }
+    sout("slept\n");
 }
