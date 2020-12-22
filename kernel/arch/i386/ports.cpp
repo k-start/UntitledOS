@@ -9,3 +9,23 @@ unsigned char inb(uint16_t port) {
     asm volatile ( "inb %1, %0" : "=a"(ret) : "Nd"(port) );
     return ret;
 }
+
+void outl(uint16_t port, uint16_t val) {
+    asm volatile ( "out %0, %1" : : "a"(val), "Nd"(port) );
+}
+
+unsigned short inl(uint16_t port) {
+    unsigned short ret;
+    asm volatile ( "in %1, %0" : "=a"(ret) : "Nd"(port) );
+    return ret;
+}
+
+unsigned short ins(uint16_t port) {
+	unsigned short ret;
+	asm volatile ("inw %1, %0" : "=a" (ret) : "dN" (port));
+	return ret;
+}
+
+void insm(uint16_t port, uint8_t* data, unsigned long size) {
+	asm volatile ("rep insw" : "+D" (data), "+c" (size) : "d" (port) : "memory");
+}

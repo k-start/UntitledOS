@@ -12,7 +12,7 @@
 #include <kernel/vmm.h>
 #include <kernel/heap.h>
 #include <kernel/Filesystem/VFS.h>
-#include <kernel/Filesystem/FDC.h>
+#include <kernel/Filesystem/IDE.h>
 #include <kernel/ports.h>
 
 extern "C" {
@@ -68,14 +68,16 @@ extern "C" {
         printf("Ram detected: %d mb\n", (mbt->mem_lower + mbt->mem_upper)/1024 + 1);
 
 
-        outb(0x70, 0x10);
-        unsigned drives = inb(0x71);
+        // outb(0x70, 0x10);
+        // unsigned drives = inb(0x71);
 
-        sout(" - Floppy drive 0: %s\n", drive_types[drives >> 4]);
-        sout(" - Floppy drive 1: %s\n", drive_types[drives & 0xf]);
+        // sout(" - Floppy drive 0: %s\n", drive_types[drives >> 4]);
+        // sout(" - Floppy drive 1: %s\n", drive_types[drives & 0xf]);
 
         // Floppy disk controller - BROKEN
-        FDC fdc(IRQ6);
+        // FDC fdc(IRQ6);
+
+        IDE ide;
 
         vConsole.newCommand();
 
