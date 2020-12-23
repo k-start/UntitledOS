@@ -48,7 +48,8 @@ PMM::PMM(multiboot_info_t *mbt) {
             sout("%d  addr: 0x%x  len: 0x%x  size: 0x%x  ", i, mmap[i].addr, mmap[i].len, mmap[i].size);
             sout("%s\n", strMemoryTypes[memType]);
 
-            if(memType + 1 == MULTIBOOT_MEMORY_AVAILABLE) {
+			// FIX ME - investigate the 0x1 chunk of memory trying to be added when in ISO mode
+            if(memType + 1 == MULTIBOOT_MEMORY_AVAILABLE && (uint32_t)mmap[i].addr != (uint32_t)0x1) {
                 initRegion(mmap[i].addr, mmap[i].len);
             }
         }
