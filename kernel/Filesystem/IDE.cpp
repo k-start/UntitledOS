@@ -30,9 +30,18 @@ int IDE::ataWait(uint16_t bus, int advanced) {
     if(advanced) {
         status = inb(bus + REG_STATUS);
 
-        if(status & SR_ERR) return 1;
-        if(status & SR_DF)  return 1;
-        if(!(status & SR_DRQ)) return 1;
+        if(status & SR_ERR) {
+            sout("[IDE] SR_ERR\n");
+            return 1;
+        }
+        if(status & SR_DF) {
+            sout("[IDE] SR_DF\n");
+            return 1;
+        }
+        if(!(status & SR_DRQ)) {
+            sout("[IDE] SR_DRQ\n");
+            return 1;
+        }
     }
 
     return 0;
@@ -81,7 +90,6 @@ void IDE::init(uint16_t bus) {
     sout("[IDE] Device - %s\n", device.model);
     sout("[IDE] Sectors_48 = %d\n", (uint32_t)device.sectors_48);
     sout("[IDE] Sectors_28 = %d\n", device.sectors_28);
-
     sout("[IDE] Size = %dMB\n", ((device.sectors_28 / 2) / 1024));
 
     outb(bus + REG_CONTROL, 0x02);

@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <kernel/kmalloc.h>
+#include <Y/Vector.h>
 
 class String {
     public:
@@ -23,6 +24,9 @@ class String {
         unsigned int capacity() const { return m_capacity; }
         unsigned int size() const { return m_size; }
         int length() const { return (int)m_size; }
+
+        String toUpper();
+        Vector<String> split(char delim);
 
         char *c_str() const;
 

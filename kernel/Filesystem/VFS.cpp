@@ -1,9 +1,15 @@
 #include <kernel/Filesystem/VFS.h>
+#include <string.h>
+
+#include <kernel/Filesystem/FAT12.h>
 
 VFS *VFS::the;
 
 VFS::VFS() {
     the = this;
+
+    FAT12 *fat12 = new FAT12();
+    registerFileSystem(fat12, 0);
 }
 
 VFS::FILE VFS::openFile(const char* fname) {
@@ -14,11 +20,11 @@ VFS::FILE VFS::openFile(const char* fname) {
 
         if(fname[1] == ':') {
             device = fname[0];
-            filename += 2;
+            filename += 3;
         }
 
         if(_FileSystems[device - 'a']) {
-            VFS::FILE file = _FileSystems[device - 'a']->Open(filename);
+            VFS::FILE file = _FileSystems[device - 'a']->open(filename);
             file.device = device;
             return file;
         }
@@ -33,7 +39,7 @@ VFS::FILE VFS::openFile(const char* fname) {
 void VFS::readFile(PFILE file, unsigned char* buffer, size_t length) {
     if(file) {
         if(_FileSystems[file->device - 'a']) {
-            _FileSystems[file->device - 'a']->Read(file, buffer, length);
+            _FileSystems[file->device - 'a']->read(file, buffer, length);
         }
     }
 }
@@ -41,12 +47,19 @@ void VFS::readFile(PFILE file, unsigned char* buffer, size_t length) {
 void VFS::closeFile(PFILE file) {
     if(file) {
         if(_FileSystems[file->device - 'a']) {
-            _FileSystems[file->device - 'a']->Close(file);
+            _FileSystems[file->device - 'a']->close(file);
         }
     }
 }
 
-void VFS::registerFileSystem(PFILESYSTEM fsys, unsigned int deviceID) {
+Vector<String> VFS::list(unsigned int deviceID) {
+    if (deviceID < DEVICE_MAX) {
+		return _FileSystems[deviceID]->list();
+    }
+    return Vector<String>();
+}
+
+void VFS::registerFileSystem(FAT12* fsys, unsigned int deviceID) {
     if(deviceID < DEVICE_MAX) {
         if(fsys) {
             _FileSystems[deviceID] = fsys;
@@ -54,7 +67,7 @@ void VFS::registerFileSystem(PFILESYSTEM fsys, unsigned int deviceID) {
     }
 }
 
-void VFS::unregisterFileSystem(PFILESYSTEM fsys) {
+void VFS::unregisterFileSystem(FAT12* fsys) {
     for(int i = 0; i < DEVICE_MAX; i++) {
         if(_FileSystems[i] == fsys) {
             _FileSystems[i] = NULL;

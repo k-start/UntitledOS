@@ -5,6 +5,7 @@
 #include <string.h>
 #include <kernel/RTC.h>
 #include <kernel/PIT.h>
+#include <kernel/Filesystem/VFS.h>
 
 static char map[0x80] = {
     0, '\033', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 0x08, '\t',
@@ -164,9 +165,13 @@ void VirtualConsole::newCommand() {
     updateCursor(column, row);
 }
 
-void VirtualConsole::runCommand(String command) {
-    if(command.length() > 0) {
-        previousCommands.push_back(command);
+void VirtualConsole::runCommand(String wholeCommand) {
+    if(wholeCommand.length() > 0) {
+
+        Vector<String> split = wholeCommand.split(' ');
+        String command = split[0];
+
+        previousCommands.push_back(wholeCommand);
         commandIndex = previousCommands.size();
 
         // switch (command) {
@@ -178,19 +183,43 @@ void VirtualConsole::runCommand(String command) {
         printf("\n");
         if(command == "time") {
             printf(RTC::the->getTime().c_str());
+
         } else if(command == "date") {
             printf(RTC::the->getDate().c_str());
+
         } else if(command == "uptime") {
             printf(PIT::the->getUptimeStr().c_str());
+
         }  else if(command == "ram") {
             printf("%d mb", PMM::the->memorySize/1024 + 1);
+
         } else if(command == "mem") {
             printf("Size: %d kb\n", PMM::the->memorySize);
             printf("Max Blocks: %d\n", PMM::the->maxBlocks);
             printf("Used Blocks: %d\n", PMM::the->usedBlocks);
             printf("Free Blocks: %d", PMM::the->maxBlocks - PMM::the->usedBlocks);
+
+        } else if(command == "open" && split.length() > 1) {
+            FILE f = VFS::the->openFile(split[1].c_str());
+
+            while (f.eof != 1) {
+                uint8_t buf[513];
+                VFS::the->readFile(&f, buf, 512);
+                buf[512] = '\0';
+                printf("%s", buf);
+            }
+            printf("\n");
+
+        } else if(command == "ls") {
+            // printf("a:\\file.txt\n");
+            Vector<String> list = VFS::the->list(0);
+            for(int i = 0; i < list.length(); i++) {
+                printf("%s    ", list[i].c_str());
+            }
+            printf("\n");
+
         } else {
-            printf("Unknown command: %s", command.c_str());
+            printf("Unknown command: %s", wholeCommand.c_str());
         }
     }
 }

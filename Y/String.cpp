@@ -95,6 +95,39 @@ void String::clear() {
     m_size = 0;
 }
 
+String String::toUpper() {
+    String newString;
+    for(int i = 0; i < length(); i++) {
+        if(buffer[i] >= 'a' && buffer[i] <= 'z') {
+            newString.append(buffer[i] - ('a' - 'A'));
+        } else {
+            newString.append(buffer[i]);
+        }
+    }
+    return newString;
+}
+
+Vector<String> String::split(char delim) {
+    Vector<String> v;
+    String s;
+
+    for(int i = 0; i < length(); i++) {
+        if(buffer[i] == delim) {
+            if(s.length() > 0) {
+                v.push_back(s);
+                sout("%s\n", s);
+                s.clear();
+            }
+        } else {
+            s.append(buffer[i]);
+        }
+    }
+    if(s.length() > 0) {
+        v.push_back(s);
+    }
+    return v;
+}
+
 char *String::c_str() const {
     buffer[m_size] = '\0';
     return buffer;

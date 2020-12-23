@@ -50,6 +50,7 @@ kputchar.o \
 kmalloc.o \
 Filesystem/VFS.o \
 Filesystem/IDE.o \
+Filesystem/FAT12.o \
  
 OBJS=\
 $(ARCHDIR)/crti.o \

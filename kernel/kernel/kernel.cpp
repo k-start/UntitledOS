@@ -27,8 +27,10 @@ extern "C" {
         VMM vmm(&pmm); // virtual
         Heap heap; // kernel heap
 
+        IDE ide;
+
         // initialise the virtual filesystem
-        VFS vfs();
+        VFS vfs;
 
         gdtInstall(); // FIX ME - move to CPU
         CPU::isrInstall();
@@ -39,8 +41,6 @@ extern "C" {
         PIT pit(IRQ0, 100);
         KeyboardDevice keyboard(IRQ1);
         RTC rtc(IRQ8);
-
-        IDE ide;
 
         VirtualConsole vConsole;
 
