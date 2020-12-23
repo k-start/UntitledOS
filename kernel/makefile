@@ -49,6 +49,7 @@ kprintf.o \
 kputchar.o \
 kmalloc.o \
 Filesystem/VFS.o \
+Filesystem/IDE.o \
  
 OBJS=\
 $(ARCHDIR)/crti.o \

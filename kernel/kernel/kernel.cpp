@@ -12,6 +12,7 @@
 #include <kernel/vmm.h>
 #include <kernel/heap.h>
 #include <kernel/Filesystem/VFS.h>
+#include <kernel/Filesystem/IDE.h>
 
 extern "C" {
 
@@ -38,6 +39,8 @@ extern "C" {
         PIT pit(IRQ0, 100);
         KeyboardDevice keyboard(IRQ1);
         RTC rtc(IRQ8);
+
+        IDE ide;
 
         VirtualConsole vConsole;
 
