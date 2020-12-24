@@ -118,7 +118,7 @@ int PMM::mmapFirstFreeS(size_t size) {
 				if (!(memoryMap[i] & bit)) {
 
 					int startingBit = i*32;
-					startingBit += bit;		//get the free bit in the dword at index i
+					startingBit += bit; //get the free bit in the dword at index i
 
 					uint32_t free = 0; //loop through each bit to see if its enough space
 					for (uint32_t count = 0; count <= size;count++) {
@@ -146,7 +146,7 @@ void PMM::initRegion(uint32_t base, size_t size) {
 		usedBlocks--;
 	}
  
-	mmapSet(0);	//first block is always set. This insures allocs cant be 0
+	mmapSet(0); //first block is always set. This insures allocs cant be 0
 }
 
 void PMM::deinitRegion(uint32_t base, size_t size) {
@@ -162,14 +162,14 @@ void PMM::deinitRegion(uint32_t base, size_t size) {
 void* PMM::allocBlock() {
 	if (maxBlocks - usedBlocks <= 0) {
         sout("OUT OF MEMORY\n");
-		return 0;	//out of memory
+		return 0; //out of memory
     }
  
 	int frame = mmapFirstFree();
  
 	if (frame == -1) {
         sout("OUT OF MEMORY - FRAME\n");
-		return 0;	//out of memory
+		return 0; //out of memory
     }
 
 	mmapSet(frame);
@@ -184,14 +184,14 @@ void* PMM::allocBlocks(size_t size) {
 	sout("ALLOC");
 	if (maxBlocks - usedBlocks <= size) {
         sout("OUT OF MEMORY\n");
-		return 0;	//not enough space
+		return 0; //not enough space
     }
 
 	int frame = mmapFirstFreeS(size);
 
 	if (frame == -1) {
         sout("OUT OF MEMORY - FRAME\n");
-		return 0;	//not enough space
+		return 0; //not enough space
     }
     
 	for (uint32_t i=0; i<size; i++) {

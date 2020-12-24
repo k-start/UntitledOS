@@ -17,9 +17,9 @@ class Heap {
         } SlabFrame;
 
         typedef struct Slab {
-            size_t allocSize; // the amount of bytes this slab deals with
+            size_t allocSize;      // the amount of bytes this slab deals with
             SlabFrame *firstFrame; // pointer to the first frame of memory
-            size_t slabSize; // amount of frames in the slab
+            size_t slabSize;       // amount of frames in the slab
         } Slab;
 
         Heap();

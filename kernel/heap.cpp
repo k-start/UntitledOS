@@ -31,7 +31,7 @@ void *Heap::alloc(size_t size) {
         return 0;
     }
 
-    for(size_t i; i < slabCount; i++) {
+    for(size_t i = 0; i < slabCount; i++) {
         if(size <= slabs[i].allocSize) {
             // Allocate out of this slab
             return slabAlloc(slabs[i], allocedSlabs[i]);
@@ -46,7 +46,7 @@ void Heap::free(void *p) {
     uint32_t address = (uint32_t)p;
 
     // we dont know how big the pointer is so we need to search all the allocced slabs
-    for(size_t i; i < slabCount; i++) {
+    for(size_t i = 0; i < slabCount; i++) {
         Heap::Slab *slab = &allocedSlabs[i];
         Heap::SlabFrame *frame = slab->firstFrame;
         bool found = false;
