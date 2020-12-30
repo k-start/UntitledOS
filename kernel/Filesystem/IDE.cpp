@@ -124,3 +124,29 @@ uint8_t* IDE::readSector(uint32_t sector) {
 
     return buf;
 }
+
+void IDE::writeSector(uint16_t bus, uint8_t slave, uint32_t lba, uint8_t* buf) {
+    outb(bus + REG_CONTROL, 0x02);
+
+    ataWaitReady(bus);
+
+    outb(bus + REG_HDDEVSEL, 0xE0 | slave << 4 | (lba & 0x0F000000) >> 24);
+    ataWait(bus, 0);
+    outb(bus + REG_FEATURES, 0x00);
+    outb(bus + REG_SECCOUNT0, 0x01);
+    outb(bus + REG_LBA0, (lba & 0x000000FF) >>  0);
+	outb(bus + REG_LBA1, (lba & 0x0000FF00) >>  8);
+	outb(bus + REG_LBA2, (lba & 0x00FF0000) >> 16);
+	outb(bus + REG_COMMAND, CMD_WRITE_PIO);
+	outb(bus, 0);
+
+    int size = 256;
+
+    outsm(bus, buf, size);
+    outb(bus + 0x07, CMD_CACHE_FLUSH);
+	ataWait(bus, 0);
+}
+
+void IDE::writeSector(uint32_t sector, uint8_t* buf) {
+    writeSector(BUS_ADDR, 0, sector, buf);
+}

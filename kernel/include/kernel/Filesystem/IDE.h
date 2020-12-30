@@ -128,6 +128,7 @@ class IDE {
         void init(uint16_t bus);
 
         uint8_t* readSector(uint32_t sector);
+        void writeSector(uint32_t sector, uint8_t* buf);
 
     private:
         void ataIOwait(uint16_t bus);
@@ -136,6 +137,8 @@ class IDE {
         void ataWaitReady(uint16_t bus);
 
         void readSector(uint16_t bus, uint8_t slave, uint32_t lba, uint8_t* buf);
+        void writeSector(uint16_t bus, uint8_t slave, uint32_t lba, uint8_t* buf);
+
         // IDEChannelRegisters channels[2];
         // IDEDevice devices[4];
         // u8 ide_buf[2048] = {0};
