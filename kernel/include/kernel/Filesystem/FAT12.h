@@ -66,6 +66,7 @@ class FAT12 {
 
         FILE directory(String name);
         void read(PFILE file, uint8_t* buf, int len);
+        void write(PFILE file, uint8_t* buf, int len);
 
         void close(PFILE file);
         FILE open(String name);
@@ -74,6 +75,12 @@ class FAT12 {
         Vector<String> list();
 
     private:
+
+        Vector<int> findSectors(int sectorCount);
+        void updateFAT(Vector<int> sectors);
+
+        void writetest(String filename, uint8_t* buf, int len);
+
         PBOOTSECTOR bootsector;
         MOUNT_INFO mountInfo;
 

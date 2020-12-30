@@ -17,8 +17,10 @@ class RTC : public IRQHandler {
 
         static RTC *the;
 
-    private:
         u8 second, minute, hour, day, month, year;
+
+    private:
+        // u8 second, minute, hour, day, month, year;
 
 };
 
