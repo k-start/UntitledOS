@@ -11,7 +11,6 @@ VMM::VMM(PMM *pmm) {
     the = this;
     this->pmm = pmm;
     BootPageDirectory[1023] = ((uint32_t)&BootPageDirectory - 0xC0000000) | 3;
-    sout("0x%x\n", &BootPageDirectory);
 }
 
 // Fix me - do something when address is already in use, overwrite? error?

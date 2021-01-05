@@ -115,7 +115,6 @@ Vector<String> String::split(char delim) {
         if(buffer[i] == delim) {
             if(s.length() > 0) {
                 v.push_back(s);
-                sout("%s\n", s);
                 s.clear();
             }
         } else {

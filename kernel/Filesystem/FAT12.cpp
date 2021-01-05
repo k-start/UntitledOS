@@ -16,42 +16,42 @@ FAT12::FAT12() {
     mountInfo.rootOffset = (bootsector->FATs * bootsector->sectorsPerFAT) + 1;
     mountInfo.rootSize = (bootsector->directoryEntries * 32) / bootsector->bytesPerSector;
 
-    uint8_t *FAT = IDE::the->readSector(1);
+    // uint8_t *FAT = IDE::the->readSector(1);
 
-    int j = 0;
-    int c = 0;
-    while(j < 512) {
-        uint16_t val = *(uint16_t*)&FAT[j];
+    // int j = 0;
+    // int c = 0;
+    // while(j < 512) {
+    //     uint16_t val = *(uint16_t*)&FAT[j];
 
-        if(c == 0) {
-            uint8_t p1 = val;
-            uint8_t p2 = val >> 8;
+    //     if(c == 0) {
+    //         uint8_t p1 = val;
+    //         uint8_t p2 = val >> 8;
 
-            val = ((0x0f & p2) << 8) | p1;
-        } else {
-            uint8_t p1 = val;
-            uint8_t p2 = val >> 8;
+    //         val = ((0x0f & p2) << 8) | p1;
+    //     } else {
+    //         uint8_t p1 = val;
+    //         uint8_t p2 = val >> 8;
 
-            val = p2 << 4 | ((0xf0 & p1) >> 4);
-        }
+    //         val = p2 << 4 | ((0xf0 & p1) >> 4);
+    //     }
 
-        sout("0x%x ", val);
-        // if(val == 0x0) {
-        //     sout("0 ");
-        // } else if (val >= 0xFF8){
-        //     sout("E ");
-        // } else {
-        //     sout("1 ");
-        // }
+    //     sout("0x%x ", val);
+    //     // if(val == 0x0) {
+    //     //     sout("0 ");
+    //     // } else if (val >= 0xFF8){
+    //     //     sout("E ");
+    //     // } else {
+    //     //     sout("1 ");
+    //     // }
 
-        if(c == 1) {
-            c = -1;
-            j++;
-        }
-        c++;
-        j++;
-    }
-    sout("\n");
+    //     if(c == 1) {
+    //         c = -1;
+    //         j++;
+    //     }
+    //     c++;
+    //     j++;
+    // }
+    // sout("\n");
 
     // Vector<int> sectors = findSectors(1);
 

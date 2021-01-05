@@ -80,3 +80,16 @@ void VFS::unregisterFileSystemByID (unsigned int deviceID) {
 		_FileSystems[deviceID] = NULL;
     }
 }
+
+void VFS::write(String filename, String content) {
+    unsigned char device = 'a';
+
+    if(filename[1] == ':') {
+        device = filename[0];
+        filename += 3;
+    }
+
+    if(_FileSystems[device - 'a']) {
+        _FileSystems[device - 'a']->writetest(filename, (uint8_t*)content.c_str(), content.length());
+    }
+}

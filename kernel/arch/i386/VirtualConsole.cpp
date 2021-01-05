@@ -218,6 +218,13 @@ void VirtualConsole::runCommand(String wholeCommand) {
             }
             printf("\n");
 
+        } else if(command == "write" && split.length() > 2) {
+            String content;
+            for(int i = 2; i < split.length(); i++) {
+                content.append(split[i] + " ");
+            }
+            VFS::the->write(split[1], content);
+
         } else {
             printf("Unknown command: %s", wholeCommand.c_str());
         }
@@ -225,7 +232,6 @@ void VirtualConsole::runCommand(String wholeCommand) {
 }
 
 void VirtualConsole::clearCommand() {    
-    sout("%d\n", inputStr.length());
     for(int i = 0; i < inputStr.length(); i++) {
         column--;
         putchar(' ');

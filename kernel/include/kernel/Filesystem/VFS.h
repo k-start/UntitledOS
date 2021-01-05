@@ -42,6 +42,8 @@ class VFS {
         void unregisterFileSystem(FAT12* fsys);
         void unregisterFileSystemByID(unsigned int deviceID);
 
+        void write(String filename, String content);
+
         static VFS *the;
 
     private:

@@ -25,7 +25,7 @@ void *kmalloc(size_t size) {
 	// sout("KMALLOC: 0x%x - %d block(s) - size: 0x%x\n", addr, blocks, size);
 
 	void *addr = Heap::the->alloc(size);
-	sout("KMALLOC: 0x%x - size: 0x%x\n", addr, size);
+	// sout("KMALLOC: 0x%x - size: 0x%x\n", addr, size);
 
 	return addr;
 }
@@ -39,6 +39,6 @@ void kfree(void *p) {
 
 	// sout("KFREE: 0x%x - %d blocks - size: 0x%x\n", uint32_t(p), blocks, size);
 	// PMM::the->freeBlocks(p, blocks);
-	sout("KFREE: 0x%x\n", uint32_t(p));
+	// sout("KFREE: 0x%x\n", uint32_t(p));
 	Heap::the->free(p);
 }
