@@ -236,14 +236,22 @@ Vector<String> FAT12::list() {
         directory = (PDIRECTORY) buf;
 
         for(int i = 0; i < 16; i++) {
-            // String fname((char*)directory->filename);
             if(directory->filename[0] != '\0') {
                 String fname = (char*)directory->filename;
-                Vector<String> split = fname.split(' ');
-                if(split.length() == 2) {
-                    fname = split[0] + "." + split[1];
-                } else {
-                    fname = split[0];
+                if(directory->attributes == 0x10) {
+                    String temp;
+                    for(int i = 0; i < fname.length(); i++) {
+                        if(i == 8) break;
+                        temp.append(fname[i]);
+                    }
+                    fname = temp;
+                } else if(directory->attributes == 0x0) {
+                    Vector<String> split = fname.split(' ');
+                    if(split.length() >= 2) {
+                        fname = split[0] + "." + split[split.length() - 1];
+                    } else {
+                        fname = split[0];
+                    }
                 }
 
                 ret.push_back(fname);

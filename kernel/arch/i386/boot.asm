@@ -42,10 +42,11 @@ BootPageDirectory:
     ; bit 0: P  The kernel page is present.
     ; This entry must be here -- otherwise the kernel will crash immediately after paging is
     ; enabled because it can't fetch the next instruction! It's ok to unmap this page later.
-    dd 0x00000083
+    ; 0x00000083
+    dd 0x00000087
     times (KERNEL_PAGE_NUMBER - 1) dd 0                 ; Pages before kernel space.
     ; This page directory entry defines a 4MB page containing the kernel.
-    dd 0x00000083
+    dd 0x00000087
     times (1024 - KERNEL_PAGE_NUMBER - 2) dd 0  ; Pages after the kernel image.
     dd 0x10A000 ; Add the Page Directory to the final entry of the Page Directory to enable recursive mapping
 

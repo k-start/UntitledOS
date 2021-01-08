@@ -138,6 +138,27 @@ char exceptionMessages[35][50] = {
 void isrHandler(registers_t *r) {
     sout("Interrupt Recieved: %s\n", exceptionMessages[r->int_no]);
     kprintf("Interrupt Recieved: %s\n", exceptionMessages[r->int_no]);
+
+    if(r->int_no == 14) {
+        uint32_t faulting_address;
+        asm volatile("mov %%cr2, %0" : "=r" (faulting_address));
+
+        int present	= !(r->err_code & 0x1);
+        int rw = r->err_code & 0x2;
+        int us = r->err_code & 0x4;
+        int reserved = r->err_code & 0x8;
+        int id = r->err_code & 0x10;
+
+        sout("Page Fault detected: (");
+        if (present)    sout("present, ");
+        if (rw)         sout("readonly, ");
+        if (us)         sout("usermode, ");
+        if (reserved)   sout("reserved");
+
+        sout(") at address (cr2): 0x%x\n", faulting_address);
+        
+    }
+    asm("hlt");
 }
 
 void irqHandler(registers_t *r) {

@@ -54,13 +54,13 @@ extern "C" {
         printf("UntitledOS Kernel\n");
         sout("UntitledOS Kernel\n");
 
-        printf("Ram detected: %d mb\n", (mbt->mem_lower + mbt->mem_upper)/1024 + 1);
+        printf("Ram detected: %d MB\n", (mbt->mem_lower + mbt->mem_upper)/1024 + 1);
 
         vConsole.newCommand();
 
         // stops main exiting too soon
         for(;;) {
-            asm("hlt");
+            // asm("hlt");
         }
     }
 }

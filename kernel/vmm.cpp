@@ -43,6 +43,7 @@ void VMM::mapPage(void *phys, void *virt) {
         }
         tableAddr |= PDE_PRESENT;
         tableAddr |= PDE_WRITABLE;
+        tableAddr |= PDE_USER;
         pageDirectory[pageDirIndex] = tableAddr;
 
         // Get the table mapped from virtual memory thanks to recursive mapping
@@ -66,6 +67,7 @@ void VMM::mapPage(void *phys, void *virt) {
     uint32_t pageAddr = (uint32_t)phys;
     pageAddr |= PTE_PRESENT;
     pageAddr |= PTE_WRITABLE;
+    pageAddr |= PTE_USER;
 
     table[pageTableIndex] = pageAddr;
 }

@@ -53,7 +53,7 @@ void VFS::closeFile(PFILE file) {
 }
 
 Vector<String> VFS::list(unsigned int deviceID) {
-    if (deviceID < DEVICE_MAX) {
+    if (_FileSystems[deviceID]) {
 		return _FileSystems[deviceID]->list();
     }
     return Vector<String>();
